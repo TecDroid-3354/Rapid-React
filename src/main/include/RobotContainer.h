@@ -1,31 +1,66 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 #pragma once
 
 #include <frc2/command/Command.h>
 
-#include "commands/ExampleCommand.h"
-#include "subsystems/ExampleSubsystem.h"
+#include "subsystems/Drivetrain.h"
+#include "frc/smartdashboard/SmartDashboard.h"
+#include "frc/XboxController.h"
+#include "frc2/command/button/Button.h"
+#include "frc/Timer.h"
+#include <rev/CANSparkMax.h>
 
-/**
- * This class is where the bulk of the robot should be declared.  Since
- * Command-based is a "declarative" paradigm, very little robot logic should
- * actually be handled in the {@link Robot} periodic methods (other than the
- * scheduler calls).  Instead, the structure of the robot (including subsystems,
- * commands, and button mappings) should be declared here.
- */
-class RobotContainer {
- public:
-  RobotContainer();
+using namespace frc2;
+using namespace frc;
 
-  frc2::Command* GetAutonomousCommand();
+/*Clase que contiene los subsistemas del robot y controla funciones generales.*/
+class RobotContainer
+{
+public:
+	RobotContainer();
 
- private:
-  // The robot's subsystems and commands are defined here...
-  ExampleSubsystem m_subsystem;
-  ExampleCommand m_autonomousCommand;
+	Command *GetAutonomousCommand();
 
-  void ConfigureButtonBindings();
+	/*Mover chasis*/
+	void Drive();
+
+	//Resetear robot
+	void Reset();
+
+	void Test();
+
+	/*Temporizador*/
+	frc::Timer timer;
+
+private:
+	// The robot's subsystems and commands are defined here...
+
+
+	// Objeto de control
+	XboxController control{0};
+
+	/*Objeto de chasis*/
+	Drivetrain chasis;
+
+
+	/*Botón para rotar el panel*/
+	Button bRotatePanel{[&]
+						{ return control.GetRawButton(cButtonA); }};
+
+	/*Botón para alinear el panel al color recibido*/
+	Button bAlignPanel{[&]
+					   { return control.GetRawButton(cButtonB); }};
+
+	/*Botón para preparar el disparador*/
+	Button bPrepare{[&]
+					{ return control.GetRawButton(cRightBumper); }};
+
+	/*Función para configurar las acciones relacionadas a cada botón*/
+	void ConfigureButtonBindings();
 };
