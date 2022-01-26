@@ -24,11 +24,10 @@ void Drivetrain::Periodic()
 {
 
 
-	SmartDashboard::PutNumber("Front Right Encoder",encoderFrontRight.GetPosition());
-	SmartDashboard::PutNumber("Front Left Encoder",encoderFrontLeft.GetPosition());
-	SmartDashboard::PutNumber("Back Right Encoder",encoderBackRight.GetPosition());
-	SmartDashboard::PutNumber("Back Left Encoder",encoderBackLeft.GetPosition());
-
+	SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition()*kDistancePerRotation);
+	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition()*kDistancePerRotation);
+	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition()*kDistancePerRotation);
+	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition()*kDistancePerRotation);
 
 
 	// Si se pica el botón, se cambia de modo, pero solamente hasta que el botón se suelta
@@ -43,8 +42,9 @@ void Drivetrain::Periodic()
 		flag = true;
 	}
 
-	// Indicar si está en modo de escalada
-	SmartDashboard::PutBoolean("Climb Mode", climbMode);
+
+
+
 }
 
 // Manejar el robot según el control
@@ -81,19 +81,51 @@ void Drivetrain::Align(float speed)
 }
 
 void Drivetrain::Reset(){
+
+	
+
 	frontRight.RestoreFactoryDefaults();
 	backRight.RestoreFactoryDefaults();
 	frontLeft.RestoreFactoryDefaults();
 	backRight.RestoreFactoryDefaults();
 
-	encoderFrontRight.SetPositionConversionFactor(kEncoderPulse);
-	encoderFrontLeft.SetPositionConversionFactor(kEncoderPulse);
-	encoderBackRight.SetPositionConversionFactor(kEncoderPulse);
-	encoderBackLeft.SetPositionConversionFactor(kEncoderPulse);
+	frontLeft.SetInverted(true);
 
 	encoderFrontRight.SetPosition(0);
-	encoderFrontRight.SetPosition(0);
+	encoderFrontLeft.SetPosition(0);
 	encoderBackRight.SetPosition(0);
 	encoderBackLeft.SetPosition(0);
+
+	ResetAuto();
 }
 
+
+void Drivetrain::RunAuto(){
+
+	ResetAuto();
+
+    PIDFrontRight.SetReference(200/kDistancePerRotation, rev::ControlType::kPosition);
+	PIDFrontLeft.SetReference(200/kDistancePerRotation, rev::ControlType::kPosition);
+	
+    SmartDashboard::PutNumber("SetPoint", 200/kDistancePerRotation);
+    SmartDashboard::PutNumber("Output", frontRight.GetAppliedOutput());
+}
+
+void Drivetrain::ResetAuto(){
+    
+    // set PID coefficients
+    PIDFrontLeft.SetP(kP);
+    PIDFrontLeft.SetI(kI);
+    PIDFrontLeft.SetD(kD);
+    PIDFrontLeft.SetIZone(kIz);
+    PIDFrontLeft.SetFF(kFF);
+    PIDFrontLeft.SetOutputRange(kMinOutput, kMaxOutput);
+
+
+	PIDFrontRight.SetP(kP);
+    PIDFrontRight.SetI(kI);
+    PIDFrontRight.SetD(kD);
+    PIDFrontRight.SetIZone(kIz);
+    PIDFrontRight.SetFF(kFF);
+    PIDFrontRight.SetOutputRange(kMinOutput, kMaxOutput);
+}
