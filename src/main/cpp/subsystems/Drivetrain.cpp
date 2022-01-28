@@ -104,12 +104,26 @@ void Drivetrain::RunAuto(){
 
 	ResetAuto();
 
-    PIDFrontRight.SetReference(200/kDistancePerRotation, rev::ControlType::kPosition);
-	PIDFrontLeft.SetReference(200/kDistancePerRotation, rev::ControlType::kPosition);
+	float requiredDistance = 0.0;
+	float victorSpeed = 0.2;
 	
-    SmartDashboard::PutNumber("SetPoint", 200/kDistancePerRotation);
+	if(fabs((encoderFrontRight.GetPosition()/kDistancePerRotation)+requiredDistance)>0.1) {
+
+    PIDFrontRight.SetReference(-requiredDistance/kDistancePerRotation, rev::ControlType::kPosition);
+	PIDFrontLeft.SetReference(-requiredDistance/kDistancePerRotation, rev::ControlType::kPosition);
+	
+	}	
+    SmartDashboard::PutNumber("SetPoint", requiredDistance/kDistancePerRotation);
     SmartDashboard::PutNumber("Output", frontRight.GetAppliedOutput());
+
+	testVictor.Set(victorSpeed);
+	SmartDashboard::PutNumber("Test Motor Speed", testVictor.Get());
+	SmartDashboard::PutNumber("Test Victor Channel", testVictor.GetChannel());
+	SmartDashboard::PutString("Test Victor's dear name", testVictor.GetName());	
 }
+
+
+Auto::Move()
 
 void Drivetrain::ResetAuto(){
     
