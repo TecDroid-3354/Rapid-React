@@ -5,16 +5,16 @@
 
 //----------------------------Ports----------------------------------
     
-    constexpr int mChasisFrontRight = 0;
-    constexpr int mChasisBackRight = 7;
-    constexpr int mChasisFrontLeft = 1;
-    constexpr int mChasisBackLeft = 6;
-    constexpr int mPanel = 0;
+    //constexpr int mChasisFrontRight = 0;
+    //constexpr int mChasisBackRight = 7;
+    //constexpr int mChasisFrontLeft = 1;
+    //constexpr int mChasisBackLeft = 6;
+    constexpr int mIntake = 0;
     constexpr int mShooter = 4;
     constexpr int mElevator = 5;
     constexpr int mClimber = 3;
     constexpr int mBalancer = 2;
-    constexpr int mIntake = 1;
+    //constexpr int mIntake = 1;
     constexpr int pStopperFront = 1;
     constexpr int pStopperBack = 2;
     constexpr int pIntakeFront = 7;
@@ -58,7 +58,7 @@
     constexpr float  kPrepareTime = 0.2;
     constexpr float  kShootTime = 4;
     constexpr float  kChargeTime = 1.5;
-    constexpr double kEncoderPulse = 3.141592653589*6*2.54; //PI por diámetro de llanta en pulgadas por cm a in
+    constexpr double kDistancePerRotation = 3.141592653589*6*2.54/10.71; //PI por diámetro de llanta en pulgadas por cm a in entre la reducción de la caja
     
 
 //-------------------------------Auto-------------------------------------
