@@ -35,6 +35,8 @@ public:
 
 	void Test();
 
+	void RunAuto();
+
 	/*Temporizador*/
 	frc::Timer timer;
 

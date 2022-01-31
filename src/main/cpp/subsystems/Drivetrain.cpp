@@ -14,21 +14,31 @@
 
 using namespace frc;
 using namespace std;
+using namespace nt;
 
 Drivetrain::Drivetrain()
 {
+	
 }
 
 // Periódicamente determina si se está picando el botón de cambiar modo de escalada
 void Drivetrain::Periodic()
 {
 
+	SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition());
+	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition());
+	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition());
+	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition());
+	SmartDashboard::PutNumber("FrontRight Motor", frontRight.Get());
+	SmartDashboard::PutNumber("FrontLeft Motor", frontLeft.Get());
+	SmartDashboard::PutNumber("BackLeft Motor", backLeft.Get());
+	SmartDashboard::PutNumber("BackRight Motor", backRight.Get());
 
-	SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition()*kDistancePerRotation);
-	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition()*kDistancePerRotation);
-	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition()*kDistancePerRotation);
-	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition()*kDistancePerRotation);
-
+	SmartDashboard::PutNumber("Gyro X", (double)gyro.GetGyroAngleX());
+	SmartDashboard::PutNumber("Gyro Y", (double)gyro.GetGyroAngleY());
+	SmartDashboard::PutNumber("Gyro Z", (double)gyro.GetGyroAngleZ());
+	SmartDashboard::PutString("Gyro X unit", gyro.GetGyroAngleX().name());
+	SmartDashboard::PutNumber("Gyro X1", gyro.GetGyroAngleX().value());
 
 	// Si se pica el botón, se cambia de modo, pero solamente hasta que el botón se suelta
 	// Esto se hace para evitar que se cambie mil veces cada segundo
@@ -60,6 +70,8 @@ void Drivetrain::Drive()
 	// Utilizar los ejes para moverse, agregar o quitar signos negativos para cambiar de dirección
 	//cambié negativo
 	chasis.ArcadeDrive(y, x);
+
+	
 }
 
 // Manejar el robot según valores específicos
@@ -81,65 +93,19 @@ void Drivetrain::Align(float speed)
 }
 
 void Drivetrain::Reset(){
-
-	
-
 	frontRight.RestoreFactoryDefaults();
 	backRight.RestoreFactoryDefaults();
 	frontLeft.RestoreFactoryDefaults();
 	backRight.RestoreFactoryDefaults();
-
-	frontLeft.SetInverted(true);
 
 	encoderFrontRight.SetPosition(0);
 	encoderFrontLeft.SetPosition(0);
 	encoderBackRight.SetPosition(0);
 	encoderBackLeft.SetPosition(0);
 
-	ResetAuto();
-}
-
-
-void Drivetrain::RunAuto(){
-
-	ResetAuto();
-
-	float requiredDistance = 0.0;
-	float victorSpeed = 0.2;
+	gyro.Calibrate();
+	gyro.Reset();
 	
-	if(fabs((encoderFrontRight.GetPosition()/kDistancePerRotation)+requiredDistance)>0.1) {
-
-    PIDFrontRight.SetReference(-requiredDistance/kDistancePerRotation, rev::ControlType::kPosition);
-	PIDFrontLeft.SetReference(-requiredDistance/kDistancePerRotation, rev::ControlType::kPosition);
-	
-	}	
-    SmartDashboard::PutNumber("SetPoint", requiredDistance/kDistancePerRotation);
-    SmartDashboard::PutNumber("Output", frontRight.GetAppliedOutput());
-
-	testVictor.Set(victorSpeed);
-	SmartDashboard::PutNumber("Test Motor Speed", testVictor.Get());
-	SmartDashboard::PutNumber("Test Victor Channel", testVictor.GetChannel());
-	SmartDashboard::PutString("Test Victor's dear name", testVictor.GetName());	
 }
 
 
-Auto::Move()
-
-void Drivetrain::ResetAuto(){
-    
-    // set PID coefficients
-    PIDFrontLeft.SetP(kP);
-    PIDFrontLeft.SetI(kI);
-    PIDFrontLeft.SetD(kD);
-    PIDFrontLeft.SetIZone(kIz);
-    PIDFrontLeft.SetFF(kFF);
-    PIDFrontLeft.SetOutputRange(kMinOutput, kMaxOutput);
-
-
-	PIDFrontRight.SetP(kP);
-    PIDFrontRight.SetI(kI);
-    PIDFrontRight.SetD(kD);
-    PIDFrontRight.SetIZone(kIz);
-    PIDFrontRight.SetFF(kFF);
-    PIDFrontRight.SetOutputRange(kMinOutput, kMaxOutput);
-}

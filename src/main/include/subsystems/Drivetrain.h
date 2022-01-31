@@ -14,9 +14,11 @@
 #include <frc/controller/PIDController.h>
 #include <rev/SparkMaxPIDController.h>
 #include <rev/CANSparkMax.h>
+#include <frc/ADIS16448_IMU.h>
 
-using namespace frc;
+using namespace frc2;
 using namespace rev;
+using namespace frc;
 
 // Clase para manejar el chasis
 class Drivetrain : public frc2::SubsystemBase
@@ -34,13 +36,21 @@ public:
 	void Drive();
 
 	// Manejar según valores específicos
-	void Drive(float y, float x);
+	void Drive(float, float);
 
 	// Activar/Desactivar seguridad
-	void SetSafetyEnabled(bool state);
+	void SetSafetyEnabled(bool);
+
+	void RunAuto();
+
+	void ResetAuto();
 
 	// Alinear
-	void Align(float speed);
+	void Align(float);
+
+	void MoveForward(float);
+
+	void TurnToAngle(float);
 
 	
 
@@ -68,11 +78,19 @@ private:
 
 	SparkMaxPIDController PIDFrontRight{frontRight.GetPIDController()};
 
-	SparkMaxPIDController PIDFrontLeft{frontRight.GetPIDController()};
+	SparkMaxPIDController PIDFrontLeft{frontLeft.GetPIDController()};
 
-	SparkMaxPIDController PIDFrontRIght{frontRight.GetPIDController()};
+	SparkMaxPIDController PIDBackRight{backRight.GetPIDController()};
 
-	SparkMaxPIDController PIDFrontRIght{frontRight.GetPIDController()};
+	SparkMaxPIDController PIDBackLeft{backLeft.GetPIDController()};
+
+	VictorSP testVictor{0};
+
+	double kP = 0.1, kI = 1e-4, kD = 1, kIz = 0, kFF = 0, kMaxOutput = 0.2, kMinOutput = -0.2;
+
+	PIDController gyroPID{kP, kI, kD};
+
+	ADIS16448_IMU gyro;
 
 	// Controlador de motores derechos
 	// Esto se hace para que dos motores hagan el mismo movimiento
