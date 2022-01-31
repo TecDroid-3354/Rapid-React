@@ -9,7 +9,7 @@
 #include "frc/drive/DifferentialDrive.h"
 #include "frc/XboxController.h"
 #include <frc/BuiltInAccelerometer.h>
-#include <frc/SpeedControllerGroup.h>
+#include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/SerialPort.h>
 #include <frc/controller/PIDController.h>
 #include <rev/SparkMaxPIDController.h>
@@ -94,10 +94,10 @@ private:
 
 	// Controlador de motores derechos
 	// Esto se hace para que dos motores hagan el mismo movimiento
-	SpeedControllerGroup right{frontRight, backRight};
+	MotorControllerGroup right{frontRight, backRight};
 
 	// Controlador de motores izquierdos
-	SpeedControllerGroup left{frontLeft, backLeft};
+	MotorControllerGroup left{frontLeft, backLeft};
 
 	// Control
 	XboxController control{0};

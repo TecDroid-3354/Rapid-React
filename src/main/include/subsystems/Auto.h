@@ -1,3 +1,5 @@
+#pragma once
+
 #include "subsystems/Drivetrain.h"
 #include <frc/smartdashboard/smartdashboard.h>
 #include <math.h>

@@ -13,7 +13,7 @@ using namespace nt;
 void Drivetrain::RunAuto(){
 
 	float requiredDistance = 200;
-	float victorSpeed = 0.2;
+	
 	
 	/*
 	float error = fabs(fabs(encoderFrontRight.GetPosition()-encoderFrontLeft.GetPosition())/2*kDistancePerRotation-requiredDistance);
@@ -31,6 +31,7 @@ void Drivetrain::RunAuto(){
 
 
 	/*
+	float victorSpeed = 0.2;
 	testVictor.Set(victorSpeed);
 	SmartDashboard::PutNumber("Test Motor Speed", testVictor.Get());
 	SmartDashboard::PutNumber("Test Victor Channel", testVictor.GetChannel());
@@ -40,13 +41,13 @@ void Drivetrain::RunAuto(){
 
 
 void Drivetrain::MoveForward(float distance){
-	PIDFrontRight.SetReference(-distance/kDistancePerRotation, rev::ControlType::kPosition);
-	PIDFrontLeft.SetReference(distance/kDistancePerRotation, rev::ControlType::kPosition);
+	PIDFrontRight.SetReference(-distance/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
+	PIDFrontLeft.SetReference(distance/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
 }
 
 void Drivetrain::TurnToAngle(float angle){
-	PIDFrontRight.SetReference((angle*M_PI/180*30)/kDistancePerRotation, rev::ControlType::kPosition);
-	PIDFrontLeft.SetReference((angle*M_PI/180*30)/kDistancePerRotation, rev::ControlType::kPosition);
+	PIDFrontRight.SetReference((angle*M_PI/180*30)/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
+	PIDFrontLeft.SetReference((angle*M_PI/180*30)/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
 }
 
 void Drivetrain::ResetAuto(){
