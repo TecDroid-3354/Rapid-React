@@ -12,6 +12,9 @@
 #include <frc/motorcontrol/VictorSP.h>
 #include "RobotContainer.h"
 #include "cameraserver/CameraServer.h"
+
+#include "frc/ADIS16448_IMU.h"
+#include "frc/ADXRS450_Gyro.h"
 using namespace cs;
 
 /*
@@ -38,4 +41,6 @@ public:
 	/*Variables para el autónomo*/
 	int step = 0;
 	float p, i, d;
+
+	ADXRS450_Gyro gyro{SPI::kOnboardCS1};
 };

@@ -34,11 +34,7 @@ void Drivetrain::Periodic()
 	SmartDashboard::PutNumber("BackLeft Motor", backLeft.Get());
 	SmartDashboard::PutNumber("BackRight Motor", backRight.Get());
 
-	SmartDashboard::PutNumber("Gyro X", (double)gyro.GetGyroAngleX());
-	SmartDashboard::PutNumber("Gyro Y", (double)gyro.GetGyroAngleY());
-	SmartDashboard::PutNumber("Gyro Z", (double)gyro.GetGyroAngleZ());
-	SmartDashboard::PutString("Gyro X unit", gyro.GetGyroAngleX().name());
-	SmartDashboard::PutNumber("Gyro X1", gyro.GetGyroAngleX().value());
+	
 
 	// Si se pica el botón, se cambia de modo, pero solamente hasta que el botón se suelta
 	// Esto se hace para evitar que se cambie mil veces cada segundo
@@ -103,8 +99,8 @@ void Drivetrain::Reset(){
 	encoderBackRight.SetPosition(0);
 	encoderBackLeft.SetPosition(0);
 
-	gyro.Calibrate();
-	gyro.Reset();
+
+	
 	
 }
 

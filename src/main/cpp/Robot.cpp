@@ -17,7 +17,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/motorcontrol/PWMSparkMax.h>
 #include <rev/CANSparkMax.h>
-
+#include "frc/shuffleboard/Shuffleboard.h"
 using namespace frc;
 using namespace rev;
 
@@ -46,6 +46,7 @@ void Robot::RobotInit()
 	
 	// Restaurar a parámetros de fábrica para que siempre empiecen "desde cero"
 	m_container.Reset();
+	frc::Shuffleboard::GetTab("Gyro").Add(gyro);
 }
 
 // Periódicamente obtener el siguiente comando
@@ -53,6 +54,8 @@ void Robot::RobotPeriodic()
 {
 
 	frc2::CommandScheduler::GetInstance().Run();
+	
+	SmartDashboard::PutNumber("Gyro", gyro.GetAngle());
 }
 
 void Robot::DisabledInit()

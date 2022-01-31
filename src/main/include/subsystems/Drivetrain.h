@@ -14,7 +14,7 @@
 #include <frc/controller/PIDController.h>
 #include <rev/SparkMaxPIDController.h>
 #include <rev/CANSparkMax.h>
-#include <frc/ADIS16448_IMU.h>
+
 
 using namespace frc2;
 using namespace rev;
@@ -90,7 +90,7 @@ private:
 
 	PIDController gyroPID{kP, kI, kD};
 
-	ADIS16448_IMU gyro;
+
 
 	// Controlador de motores derechos
 	// Esto se hace para que dos motores hagan el mismo movimiento
