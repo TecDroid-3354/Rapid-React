@@ -18,7 +18,7 @@ using namespace nt;
 
 Drivetrain::Drivetrain()
 {
-	
+
 }
 
 // Periódicamente determina si se está picando el botón de cambiar modo de escalada
@@ -67,12 +67,15 @@ void Drivetrain::Drive()
 	//cambié negativo
 	chasis.ArcadeDrive(y, x);
 
+	Align(0);
+
 	
 }
 
 // Manejar el robot según valores específicos
 void Drivetrain::Drive(float y, float x)
 {
+	
 	chasis.ArcadeDrive(y, x);
 }
 
@@ -89,15 +92,6 @@ void Drivetrain::Reset(){
 	backRight.RestoreFactoryDefaults();
 	frontLeft.RestoreFactoryDefaults();
 	backRight.RestoreFactoryDefaults();
-
-	encoderFrontRight.SetPosition(0);
-	encoderFrontLeft.SetPosition(0);
-	encoderBackRight.SetPosition(0);
-	encoderBackLeft.SetPosition(0);
-
-
-	
-	
 }
 
 

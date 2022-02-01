@@ -15,11 +15,16 @@ using namespace frc;
 using namespace std;
 using namespace nt;
 
+
+	
+
+
+
 void Drivetrain::RunAuto(){
 
 	float requiredDistance = 200;
 	
-	Align();
+	Align(100);
 	
 	/*
 	float error = fabs(fabs(encoderFrontRight.GetPosition()-encoderFrontLeft.GetPosition())/2*kDistancePerRotation-requiredDistance);
@@ -60,13 +65,14 @@ void Drivetrain::TurnToAngle(float angle){
 }
 
 void Drivetrain::ResetAuto(){
+
 	PIDFrontLeft.SetP(kP);
     PIDFrontLeft.SetI(kI);
     PIDFrontLeft.SetD(kD);
     PIDFrontLeft.SetIZone(kIz);
     PIDFrontLeft.SetFF(kFF);
     PIDFrontLeft.SetOutputRange(kMinOutput, kMaxOutput);
-
+	
 
 	PIDFrontRight.SetP(kP);
     PIDFrontRight.SetI(kI);
@@ -77,35 +83,50 @@ void Drivetrain::ResetAuto(){
 
 	gyroPID.EnableContinuousInput(-360,360);
 	gyroPID.SetIntegratorRange(-0.5,0.5);
-	gyroPID.SetTolerance(0.1,1);
+	gyroPID.SetTolerance(0.1,1);	
+
+
+	encoderFrontRight.SetPosition(0);
+	encoderFrontLeft.SetPosition(0);
+	encoderBackRight.SetPosition(0);
+	encoderBackLeft.SetPosition(0);
+	
+	frontToTarget = 0;
+	gotLimelightDistance = false;
 	
 }
 
-void Drivetrain::Align(){
-
-
+void Drivetrain::Align(float requiredDistance){
 
 	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
-		double targetOffsetAngle_Horizontal = table->GetNumber("tx",0.0);
-		double targetOffsetAngle_Vertical = table->GetNumber("ty",0.0);
-		double targetArea = table->GetNumber("ta",0.0);
-		double targetSkew = table->GetNumber("ts",0.0);
+	double horizontalAngle = table->GetNumber("tx",0.0);
+	double verticalAngle = table->GetNumber("ty",0.0);
+	double targetArea = table->GetNumber("ta",0.0);
+	double targetSkew = table->GetNumber("ts",0.0);
 
-		SmartDashboard::PutNumber("Horizontal", targetOffsetAngle_Horizontal);
-		SmartDashboard::PutNumber("Vertical", targetOffsetAngle_Vertical);
-		SmartDashboard::PutNumber("Area", targetArea);
-		SmartDashboard::PutNumber("Skew", targetSkew);
-
-		float a2 = targetOffsetAngle_Vertical*M_PI/180;
-
-		float d = (h2-h1)/tan(a1+a2)-d2;
+	SmartDashboard::PutNumber("Horizontal", horizontalAngle);
+	SmartDashboard::PutNumber("Vertical", verticalAngle);
+	SmartDashboard::PutNumber("Area", targetArea);
+	SmartDashboard::PutNumber("Skew", targetSkew);
 
 
-	SmartDashboard::PutNumber("Distancia", d);
 
+	if(frontToTarget == 0 && !gotLimelightDistance){
+		
+		
+		float verticalAngleRadians = verticalAngle*M_PI/180;
 
-	if(d != 0){
-		MoveForward(d-50);
+		frontToTarget = (kObjectiveHeight-kLimelightHeight)/tan(kLimelightAngle+verticalAngleRadians)-kLimelightToFront;
+		
+		if(frontToTarget != 0){
+			gotLimelightDistance = true;
+		}
+	}
+
+	SmartDashboard::PutNumber("Distancia a recorrer", frontToTarget - requiredDistance);
+
+	if(frontToTarget != 0 && gotLimelightDistance){
+		MoveForward(frontToTarget - requiredDistance);
 	}
 
 }

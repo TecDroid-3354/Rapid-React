@@ -79,9 +79,7 @@ void Robot::AutonomousInit()
 {
 
 	// Resetear el paso
-	step = 0;
-
-	m_container.Reset();
+	m_container.ResetAuto();
 
 }
 

@@ -22,10 +22,10 @@
 
 //---------------------------Limelight----------------------------------
 
-	constexpr int h2 = 136;
-	constexpr int h1 = 35;
-	constexpr float a1 = 40*M_PI/180;
-    constexpr float d2 = 65;
+	constexpr int kObjectiveHeight = 135;
+	constexpr int kLimelightHeight = 35;
+	constexpr float kLimelightAngle = 40*M_PI/180;
+    constexpr float kLimelightToFront = 68;
 
 
 //----------------------------Spark-IDs---------------------------------

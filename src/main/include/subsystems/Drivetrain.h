@@ -12,13 +12,21 @@
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <frc/SerialPort.h>
 #include <frc/controller/PIDController.h>
+#include <frc2/command/PIDSubsystem.h>
 #include <rev/SparkMaxPIDController.h>
 #include <rev/CANSparkMax.h>
+#include "networktables/NetworkTable.h"
+#include "networktables/NetworkTableInstance.h"
+#include "networktables/NetworkTableEntry.h"
+#include "networktables/NetworkTableValue.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 
 
 using namespace frc2;
 using namespace rev;
 using namespace frc;
+
+
 
 // Clase para manejar el chasis
 class Drivetrain : public frc2::SubsystemBase
@@ -46,7 +54,7 @@ public:
 	void ResetAuto();
 
 	// Alinear
-	void Align();
+	void Align(float);
 
 	void MoveForward(float);
 
@@ -55,6 +63,8 @@ public:
 
 
 private:
+
+
 
 	// Motor frente derecho
 	CANSparkMax frontRight{frontRightDeviceID, CANSparkMax::MotorType::kBrushless};
@@ -90,6 +100,7 @@ private:
 
 	PIDController gyroPID{kP, kI, kD};
 
+	
 
 
 	// Controlador de motores derechos
@@ -111,5 +122,5 @@ private:
 	bool climbMode = false;
 
 	bool gotLimelightDistance = false;
-	float d = 0;
+	float frontToTarget = 0;
 };

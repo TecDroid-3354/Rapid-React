@@ -35,9 +35,12 @@ void RobotContainer::Test()
 
 void RobotContainer::Reset(){
 	chasis.Reset();
-	chasis.ResetAuto();
 }
 
 void RobotContainer::RunAuto(){
 	chasis.RunAuto();
+}
+
+void RobotContainer::ResetAuto(){
+	chasis.ResetAuto();
 }
