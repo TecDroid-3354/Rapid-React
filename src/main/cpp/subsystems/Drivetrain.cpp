@@ -25,15 +25,10 @@ Drivetrain::Drivetrain()
 void Drivetrain::Periodic()
 {
 
-	SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition());
-	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition());
-	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition());
-	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition());
 	SmartDashboard::PutNumber("FrontRight Motor", frontRight.Get());
 	SmartDashboard::PutNumber("FrontLeft Motor", frontLeft.Get());
 	SmartDashboard::PutNumber("BackLeft Motor", backLeft.Get());
 	SmartDashboard::PutNumber("BackRight Motor", backRight.Get());
-
 	
 
 	// Si se pica el botón, se cambia de modo, pero solamente hasta que el botón se suelta
@@ -65,11 +60,7 @@ void Drivetrain::Drive()
 
 	// Utilizar los ejes para moverse, agregar o quitar signos negativos para cambiar de dirección
 	//cambié negativo
-	chasis.ArcadeDrive(y, x);
-
-	Align(0);
-
-	
+	chasis.ArcadeDrive(y, x);	
 }
 
 // Manejar el robot según valores específicos
@@ -84,7 +75,6 @@ void Drivetrain::SetSafetyEnabled(bool state)
 {
 	chasis.SetSafetyEnabled(state);
 }
-
 
 
 void Drivetrain::Reset(){

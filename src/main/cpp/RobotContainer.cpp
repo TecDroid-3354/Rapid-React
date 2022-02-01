@@ -38,9 +38,9 @@ void RobotContainer::Reset(){
 }
 
 void RobotContainer::RunAuto(){
-	chasis.RunAuto();
+	auton.AdjustDistance(100);
 }
 
 void RobotContainer::ResetAuto(){
-	chasis.ResetAuto();
+	auton.Reset();
 }

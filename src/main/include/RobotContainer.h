@@ -15,6 +15,7 @@
 #include "frc2/command/button/Button.h"
 #include "frc/Timer.h"
 #include <rev/CANSparkMax.h>
+#include "subsystems/Auto.h"
 
 using namespace frc2;
 using namespace frc;
@@ -37,6 +38,8 @@ public:
 
 	void RunAuto();
 
+	void ResetAuto();
+
 	/*Temporizador*/
 	frc::Timer timer;
 
@@ -50,6 +53,7 @@ private:
 	/*Objeto de chasis*/
 	Drivetrain chasis;
 
+	Auto auton;
 
 	/*Botón para rotar el panel*/
 	Button bRotatePanel{[&]

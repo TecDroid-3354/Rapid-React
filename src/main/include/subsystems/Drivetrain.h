@@ -26,6 +26,7 @@ using namespace frc2;
 using namespace rev;
 using namespace frc;
 
+class Drivetrain;
 
 
 // Clase para manejar el chasis
@@ -60,12 +61,6 @@ public:
 
 	void TurnToAngle(float);
 
-
-
-private:
-
-
-
 	// Motor frente derecho
 	CANSparkMax frontRight{frontRightDeviceID, CANSparkMax::MotorType::kBrushless};
 
@@ -78,29 +73,11 @@ private:
 	// Motor trasero izquierdo
 	CANSparkMax backLeft{backLeftDeviceID, CANSparkMax::MotorType::kBrushless};
 
-	SparkMaxRelativeEncoder encoderFrontRight{frontRight.GetEncoder()};
 
-	SparkMaxRelativeEncoder encoderFrontLeft{frontLeft.GetEncoder()};
 
-	SparkMaxRelativeEncoder encoderBackRight{backRight.GetEncoder()};
-
-	SparkMaxRelativeEncoder encoderBackLeft{backLeft.GetEncoder()};
-
-	SparkMaxPIDController PIDFrontRight{frontRight.GetPIDController()};
-
-	SparkMaxPIDController PIDFrontLeft{frontLeft.GetPIDController()};
-
-	SparkMaxPIDController PIDBackRight{backRight.GetPIDController()};
-
-	SparkMaxPIDController PIDBackLeft{backLeft.GetPIDController()};
+private:
 
 	VictorSP testVictor{0};
-
-	double kP = 0.1, kI = 1e-4, kD = 1, kIz = 0, kFF = 0, kMaxOutput = 0.2, kMinOutput = -0.2;
-
-	PIDController gyroPID{kP, kI, kD};
-
-	
 
 
 	// Controlador de motores derechos
@@ -121,6 +98,4 @@ private:
 	// Control de modo de escalada
 	bool climbMode = false;
 
-	bool gotLimelightDistance = false;
-	float frontToTarget = 0;
 };

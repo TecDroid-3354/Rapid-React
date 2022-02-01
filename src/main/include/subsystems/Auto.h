@@ -11,6 +11,36 @@ using namespace frc;
 using namespace std;
 
 
+	
+class LimelightPID : public PIDSubsystem {
+
+	public:
+
+		LimelightPID(Drivetrain *ch, double kP, double  kI, double  kD)
+			: PIDSubsystem(frc2::PIDController(kP, kI, kD)){
+				m_controller.EnableContinuousInput(-45,45);
+				m_controller.SetIntegratorRange(-0.5,0.5);
+				m_controller.SetTolerance(0.1,1);	
+				chasis = ch;
+			}
+
+
+		double GetMeasurement() override{
+			std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+			return table->GetNumber("tx",0.0);
+		} 
+
+		void UseOutput(double output, double setpoint) override{
+			chasis->Drive(0,-std::clamp(output,-0.3,0.3));
+		}
+
+		bool AtSetpoint() {
+  			return m_controller.AtSetpoint();
+		}
+
+	private:
+		Drivetrain *chasis;
+};
 
 
 
@@ -22,7 +52,7 @@ public:
 	/*
 	   El autónomo recibe los objetos del chasis, la torre y el disparador para poderlos controlar
 	*/
-	explicit Auto(Drivetrain);
+	explicit Auto();
 
 	// Función que ocurre todo el tiempo
 	void Periodic() override;
@@ -30,73 +60,47 @@ public:
 	// Resetear
 	void Reset();
 
-	// Desactivar
-	void Disable();
-
-	// Se encuentra activo?
-	bool IsActive();
-
 	// Mover el chasis
-	bool Move(float setpoint);
+	void Move(float);
 
-	// Mover mientras prepara el disparador
-	bool MoveLoad(float setpoint);
+	void Turn(float);
 
-	// Girar
-	bool Turn(float setpoint);
+	void AdjustDistance(float);
 
-	// Activar el intake
-	bool Intake(float setpoint);
-
-	// Disparar
-	bool Launch();
-
-	// Iniciar
-	bool Start();
-
-	// Determinar si recorrió la distancia seleccionada
-	bool AtDistance();
-
-	// Determinar si giró el ángulo adecuado
-	bool AtAngle();
+	void Align();
 
 private:
-	// ADIS16448_IMU gyro;
-	BuiltInAccelerometer accelerometer;
-
-	// Encoder
-	Encoder encoder{sEncoderA, sEncoderB, true, Encoder::EncodingType::k4X};
-
 	// Cámara pixy
 	//PixySource source;
 
 	// Chasis
-	Drivetrain &chasis;
+	Drivetrain chasis;
 
-	// Torre
-	//Tower &tower;
+	SparkMaxRelativeEncoder encoderFrontRight{chasis.frontRight.GetEncoder()};
 
-	// Disparador
-	//Shooter &shooter;
+	SparkMaxRelativeEncoder encoderFrontLeft{chasis.frontLeft.GetEncoder()};
 
-	// Gyro output que controla la velocidad de giro del chasis
-	//GyroOutput *turnOutput = new GyroOutput(chasis);
+	SparkMaxRelativeEncoder encoderBackRight{chasis.backRight.GetEncoder()};
 
-	// Encoder output que controla la velocidad de avance del chasis
-	//EncoderOutput *speedOutput = new EncoderOutput(chasis);
+	SparkMaxRelativeEncoder encoderBackLeft{chasis.backLeft.GetEncoder()};
 
-	// Controla la velocidad de giro del chasis  según el PID y el giroscopio
-	//PIDController turn{kTurnP, kTurnI, kTurnD, &gyro, turnOutput};
+	SparkMaxPIDController PIDFrontRight{chasis.frontRight.GetPIDController()};
 
-	// Controla la velocidad del chasis según el PID y los encoders
-	//PIDController speed{kSpeedP, kSpeedI, kSpeedD, &encoder, speedOutput};
+	SparkMaxPIDController PIDFrontLeft{chasis.frontLeft.GetPIDController()};
 
-	// Comando que prepara el disparador y la torre
-	//Prepare *prepare = new Prepare(&shooter, &tower);
+	SparkMaxPIDController PIDBackRight{chasis.backRight.GetPIDController()};
 
-	// Comando que dispara
-	//Shoot *shoot = new Shoot(&shooter, &tower);
+	SparkMaxPIDController PIDBackLeft{chasis.backLeft.GetPIDController()};
+
+	double kP = 0.1, kI = 1e-4, kD = 1, kIz = 0, kFF = 0, kMaxOutput = 0.2, kMinOutput = -0.2;
+
+	LimelightPID limelightPID{&chasis, kP,kI,kD};
+
+	float frontToTarget = 0;
+	bool gotLimelightDistance = false;
 
 	// Temporizador
 	frc::Timer timer;
+
+	double horizontalAngle, verticalAngle, targetArea, targetSkew;
 };
