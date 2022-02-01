@@ -82,11 +82,7 @@ void Drivetrain::SetSafetyEnabled(bool state)
 	chasis.SetSafetyEnabled(state);
 }
 
-// Alinear el robot para que maneje derecho
-void Drivetrain::Align(float speed)
-{
-	Drive(control.GetRawAxis(cLeftAxisY), speed);
-}
+
 
 void Drivetrain::Reset(){
 	frontRight.RestoreFactoryDefaults();

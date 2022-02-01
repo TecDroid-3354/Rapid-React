@@ -46,13 +46,13 @@ public:
 	void ResetAuto();
 
 	// Alinear
-	void Align(float);
+	void Align();
 
 	void MoveForward(float);
 
 	void TurnToAngle(float);
 
-	
+
 
 private:
 
@@ -109,4 +109,7 @@ private:
 
 	// Control de modo de escalada
 	bool climbMode = false;
+
+	bool gotLimelightDistance = false;
+	float d = 0;
 };

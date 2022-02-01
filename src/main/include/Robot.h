@@ -34,7 +34,7 @@ public:
 	void TestInit();
 	void TestPeriodic() override;
 
-public:
+private:
 	/*Objeto del contenedor del robot*/
 	RobotContainer m_container;
 

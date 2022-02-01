@@ -18,6 +18,7 @@
 #include <frc/motorcontrol/PWMSparkMax.h>
 #include <rev/CANSparkMax.h>
 #include "frc/shuffleboard/Shuffleboard.h"
+
 using namespace frc;
 using namespace rev;
 
@@ -53,9 +54,13 @@ void Robot::RobotInit()
 void Robot::RobotPeriodic()
 {
 
+
+	
 	frc2::CommandScheduler::GetInstance().Run();
 	
 	SmartDashboard::PutNumber("Gyro", gyro.GetAngle());
+
+
 }
 
 void Robot::DisabledInit()

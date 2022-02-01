@@ -20,6 +20,14 @@
     constexpr int pIntakeFront = 7;
     constexpr int pIntakeBack = 6;
 
+//---------------------------Limelight----------------------------------
+
+	constexpr int h2 = 136;
+	constexpr int h1 = 35;
+	constexpr float a1 = 40*M_PI/180;
+    constexpr float d2 = 65;
+
+
 //----------------------------Spark-IDs---------------------------------
 
   
