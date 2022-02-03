@@ -16,6 +16,8 @@
 #include "frc/Timer.h"
 #include <rev/CANSparkMax.h>
 #include "subsystems/Auto.h"
+#include "subsystems/Intake.h"
+#include "subsystems/Shooter.h"
 
 using namespace frc2;
 using namespace frc;
@@ -53,15 +55,13 @@ private:
 	/*Objeto de chasis*/
 	Drivetrain chasis;
 
-	Auto auton;
+	/*Objeto de disparador*/
+	//Shooter shooter;
 
-	/*Botón para rotar el panel*/
-	Button bRotatePanel{[&]
-						{ return control.GetRawButton(cButtonA); }};
+	/*Objeto de torre*/
+	//Intake intake;
 
-	/*Botón para alinear el panel al color recibido*/
-	Button bAlignPanel{[&]
-					   { return control.GetRawButton(cButtonB); }};
+	Auto auton{&chasis};
 
 	/*Botón para preparar el disparador*/
 	Button bPrepare{[&]

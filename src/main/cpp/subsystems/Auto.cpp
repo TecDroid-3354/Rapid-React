@@ -44,12 +44,12 @@ void Auto::Run(){
 		
 }*/
 
-Auto::Auto(){
-
+Auto::Auto(Drivetrain *ch){
+	chasis = ch;
 }
 
 void Auto::Periodic(){
-	SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition());
+	/*SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition());
 	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition());
 	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition());
 	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition());
@@ -63,9 +63,9 @@ void Auto::Periodic(){
 	SmartDashboard::PutNumber("Horizontal", horizontalAngle);
 	SmartDashboard::PutNumber("Vertical", verticalAngle);
 	SmartDashboard::PutNumber("Area", targetArea);
-	SmartDashboard::PutNumber("Skew", targetSkew);
+	SmartDashboard::PutNumber("Skew", targetSkew);*/
 }
-
+/*
 
 void Auto::Move(float distance){
 	PIDFrontRight.SetReference(-distance/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
@@ -121,4 +121,4 @@ void Auto::AdjustDistance(float requiredDistance){
 
 void Auto::Align(){
 	
-}
+}*/

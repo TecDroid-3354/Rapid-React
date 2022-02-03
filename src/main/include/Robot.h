@@ -42,5 +42,5 @@ private:
 	int step = 0;
 	float p, i, d;
 
-	ADXRS450_Gyro gyro{SPI::kOnboardCS1};
+	ADIS16448_IMU gyro;
 };

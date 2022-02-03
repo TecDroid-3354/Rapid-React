@@ -58,7 +58,7 @@ void Robot::RobotPeriodic()
 	
 	frc2::CommandScheduler::GetInstance().Run();
 	
-	SmartDashboard::PutNumber("Gyro", gyro.GetAngle());
+	SmartDashboard::PutNumber("Gyro", gyro.GetAngle().value());
 
 
 }

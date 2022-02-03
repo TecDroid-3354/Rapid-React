@@ -52,7 +52,7 @@ public:
 	/*
 	   El autónomo recibe los objetos del chasis, la torre y el disparador para poderlos controlar
 	*/
-	explicit Auto();
+	explicit Auto(Drivetrain*);
 
 	// Función que ocurre todo el tiempo
 	void Periodic() override;
@@ -74,27 +74,27 @@ private:
 	//PixySource source;
 
 	// Chasis
-	Drivetrain chasis;
+	Drivetrain *chasis;
 
-	SparkMaxRelativeEncoder encoderFrontRight{chasis.frontRight.GetEncoder()};
+	/*SparkMaxRelativeEncoder encoderFrontRight{chasis->GetFrontRight()->GetEncoder()};
 
-	SparkMaxRelativeEncoder encoderFrontLeft{chasis.frontLeft.GetEncoder()};
+	SparkMaxRelativeEncoder encoderFrontLeft{chasis->GetFrontLeft()->GetEncoder()};
 
-	SparkMaxRelativeEncoder encoderBackRight{chasis.backRight.GetEncoder()};
+	SparkMaxRelativeEncoder encoderBackRight{chasis->GetBackRight()->GetEncoder()};
 
-	SparkMaxRelativeEncoder encoderBackLeft{chasis.backLeft.GetEncoder()};
+	SparkMaxRelativeEncoder encoderBackLeft{chasis->GetBackLeft()->GetEncoder()};
 
-	SparkMaxPIDController PIDFrontRight{chasis.frontRight.GetPIDController()};
+	SparkMaxPIDController PIDFrontRight{chasis->GetFrontRight()->GetPIDController()};
 
-	SparkMaxPIDController PIDFrontLeft{chasis.frontLeft.GetPIDController()};
+	SparkMaxPIDController PIDFrontLeft{chasis->GetFrontLeft()->GetPIDController()};
 
-	SparkMaxPIDController PIDBackRight{chasis.backRight.GetPIDController()};
+	SparkMaxPIDController PIDBackRight{chasis->GetBackRight()->GetPIDController()};
 
-	SparkMaxPIDController PIDBackLeft{chasis.backLeft.GetPIDController()};
-
+	SparkMaxPIDController PIDBackLeft{chasis->GetBackLeft()->GetPIDController()};
+*/
 	double kP = 0.1, kI = 1e-4, kD = 1, kIz = 0, kFF = 0, kMaxOutput = 0.2, kMinOutput = -0.2;
 
-	LimelightPID limelightPID{&chasis, kP,kI,kD};
+	LimelightPID limelightPID{chasis, kP,kI,kD};
 
 	float frontToTarget = 0;
 	bool gotLimelightDistance = false;
