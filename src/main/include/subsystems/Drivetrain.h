@@ -20,6 +20,7 @@
 #include "networktables/NetworkTableEntry.h"
 #include "networktables/NetworkTableValue.h"
 #include "frc/smartdashboard/SmartDashboard.h"
+#include <frc/ADIS16448_IMU.h>
 
 
 using namespace frc2;
@@ -61,6 +62,15 @@ public:
 
 	void TurnToAngle(float);
 
+	float GetEncoderAverage();
+
+	float ReadGyro();
+
+private:
+
+	VictorSP testVictor{0};
+
+	
 	// Motor frente derecho
 	CANSparkMax frontRight{frontRightDeviceID, CANSparkMax::MotorType::kBrushless};
 
@@ -73,12 +83,13 @@ public:
 	// Motor trasero izquierdo
 	CANSparkMax backLeft{backLeftDeviceID, CANSparkMax::MotorType::kBrushless};
 
+	SparkMaxRelativeEncoder encoderFrontRight{frontRight.GetEncoder()};
 
+	SparkMaxRelativeEncoder encoderFrontLeft{frontLeft.GetEncoder()};
 
-private:
+	SparkMaxRelativeEncoder encoderBackRight{backRight.GetEncoder()};
 
-	VictorSP testVictor{0};
-
+	SparkMaxRelativeEncoder encoderBackLeft{backLeft.GetEncoder()};
 
 	// Controlador de motores derechos
 	// Esto se hace para que dos motores hagan el mismo movimiento
@@ -97,5 +108,7 @@ private:
 
 	// Control de modo de escalada
 	bool climbMode = false;
+
+	ADIS16448_IMU gyro;
 
 };

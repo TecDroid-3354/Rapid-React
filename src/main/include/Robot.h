@@ -14,7 +14,6 @@
 #include "cameraserver/CameraServer.h"
 
 #include "frc/ADIS16448_IMU.h"
-#include "frc/ADXRS450_Gyro.h"
 using namespace cs;
 
 /*
@@ -41,6 +40,4 @@ private:
 	/*Variables para el autónomo*/
 	int step = 0;
 	float p, i, d;
-
-	ADIS16448_IMU gyro;
 };

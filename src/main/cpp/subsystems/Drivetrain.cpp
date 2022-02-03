@@ -29,7 +29,13 @@ void Drivetrain::Periodic()
 	SmartDashboard::PutNumber("FrontLeft Motor", frontLeft.Get());
 	SmartDashboard::PutNumber("BackLeft Motor", backLeft.Get());
 	SmartDashboard::PutNumber("BackRight Motor", backRight.Get());
-	
+
+	SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition()*kDistancePerRotation);
+	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition()*kDistancePerRotation);
+	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition()*kDistancePerRotation);
+	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition()*kDistancePerRotation);
+
+	SmartDashboard::PutNumber("Encoder Average",GetEncoderAverage());
 
 	// Si se pica el botón, se cambia de modo, pero solamente hasta que el botón se suelta
 	// Esto se hace para evitar que se cambie mil veces cada segundo
@@ -53,21 +59,21 @@ void Drivetrain::Drive()
 {
 // cambié x y y
 	// El eje X determina el giro
-	float y = control.GetRawAxis(cLeftAxisX);
+	float x = control.GetRawAxis(cLeftAxisX);
 
 	// El eje Y determina el avance
-	float x = control.GetRawAxis(cLeftAxisY);
+	float y = control.GetRawAxis(cLeftAxisY);
 
 	// Utilizar los ejes para moverse, agregar o quitar signos negativos para cambiar de dirección
 	//cambié negativo
-	chasis.ArcadeDrive(y, x);	
+	chasis.ArcadeDrive(x, y);	
 }
 
 // Manejar el robot según valores específicos
-void Drivetrain::Drive(float y, float x)
+void Drivetrain::Drive(float x, float y)
 {
 	
-	chasis.ArcadeDrive(y, x);
+	chasis.ArcadeDrive(x,y);
 }
 
 // Activar seguridad del chasis
@@ -82,6 +88,19 @@ void Drivetrain::Reset(){
 	backRight.RestoreFactoryDefaults();
 	frontLeft.RestoreFactoryDefaults();
 	backRight.RestoreFactoryDefaults();
+
+	encoderFrontLeft.SetPosition(0);
+	encoderBackLeft.SetPosition(0);
+	encoderFrontRight.SetPosition(0);
+	encoderBackRight.SetPosition(0);
+
+	gyro.Reset();
 }
 
+float Drivetrain::GetEncoderAverage(){
+	return ((encoderFrontLeft.GetPosition()+encoderBackLeft.GetPosition())-(encoderBackRight.GetPosition()+encoderFrontRight.GetPosition()))*kDistancePerRotation/4;
+}
 
+float Drivetrain::ReadGyro(){
+	return gyro.GetAngle().value();
+}

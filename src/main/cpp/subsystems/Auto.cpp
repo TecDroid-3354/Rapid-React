@@ -44,15 +44,12 @@ void Auto::Run(){
 		
 }*/
 
-Auto::Auto(Drivetrain *ch){
-	chasis = ch;
+Auto::Auto(Drivetrain &ch):chasis{ch}{
+
 }
 
 void Auto::Periodic(){
-	/*SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition());
-	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition());
-	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition());
-	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition());
+	/*
 
 	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
 	horizontalAngle = table->GetNumber("tx",0.0);
@@ -65,38 +62,38 @@ void Auto::Periodic(){
 	SmartDashboard::PutNumber("Area", targetArea);
 	SmartDashboard::PutNumber("Skew", targetSkew);*/
 }
-/*
+
 
 void Auto::Move(float distance){
-	PIDFrontRight.SetReference(-distance/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
-	PIDFrontLeft.SetReference(distance/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
+	
+	movePID.SetSetpoint(distance);
+
+	movePID.Enable();
+
 }
 
+
 void Auto::Turn(float angle){
-	PIDFrontRight.SetReference((angle*M_PI/180*30)/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
-	PIDFrontLeft.SetReference((angle*M_PI/180*30)/kDistancePerRotation, CANSparkMax::ControlType::kPosition);
+	turnPID.SetSetpoint(angle);
+
+	if(!turnPID.AtSetpoint()){
+		turnPID.Enable();
+	} else{
+		turnPID.Disable();
+	}
 }
 
 
 
 void Auto::Reset(){
 
-	PIDFrontLeft.SetP(kP);
-    PIDFrontLeft.SetI(kI);
-    PIDFrontLeft.SetD(kD);
-    PIDFrontLeft.SetIZone(kIz);
-    PIDFrontLeft.SetFF(kFF);
-    PIDFrontLeft.SetOutputRange(kMinOutput, kMaxOutput);
+	chasis.Reset();
 
-
-	PIDFrontRight.SetP(kP);
-    PIDFrontRight.SetI(kI);
-    PIDFrontRight.SetD(kD);
-    PIDFrontRight.SetIZone(kIz);
-    PIDFrontRight.SetFF(kFF);
-    PIDFrontRight.SetOutputRange(kMinOutput, kMaxOutput);
-	
+	movePID.Disable();
+	movePID.GetController().Reset();
 }
+
+/*
 
 void Auto::AdjustDistance(float requiredDistance){
 	if(frontToTarget == 0 && !gotLimelightDistance){

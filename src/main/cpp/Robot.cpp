@@ -47,20 +47,12 @@ void Robot::RobotInit()
 	
 	// Restaurar a parámetros de fábrica para que siempre empiecen "desde cero"
 	m_container.Reset();
-	frc::Shuffleboard::GetTab("Gyro").Add(gyro);
 }
 
 // Periódicamente obtener el siguiente comando
 void Robot::RobotPeriodic()
 {
-
-
-	
 	frc2::CommandScheduler::GetInstance().Run();
-	
-	SmartDashboard::PutNumber("Gyro", gyro.GetAngle().value());
-
-
 }
 
 void Robot::DisabledInit()

@@ -71,14 +71,8 @@
 
 //-------------------------------Auto-------------------------------------
 
-    constexpr float targets[] = {0,40,0,30};//{0,142,110,38,95,160,193,0,122,-90};
-    constexpr char movements[] ={'p','l','s','m','x'};//,'m','t','i','t','m','t','s','m','t'};
-    constexpr float kTurnP = 1;
-    constexpr float kTurnI = 2;
-    constexpr float kTurnD = 2;
-    constexpr float kSpeedP = 1;
-    constexpr float kSpeedI = 2;
-    constexpr float kSpeedD = 2;
+    constexpr float kMaxOutput = 0.4;
+    constexpr float kMinOutput = -0.4;
     
 //---------------------------Control Map---------------------------------
 

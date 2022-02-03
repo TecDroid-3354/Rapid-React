@@ -61,7 +61,7 @@ private:
 	/*Objeto de torre*/
 	//Intake intake;
 
-	Auto auton{&chasis};
+	Auto auton{chasis};
 
 	/*Botón para preparar el disparador*/
 	Button bPrepare{[&]
