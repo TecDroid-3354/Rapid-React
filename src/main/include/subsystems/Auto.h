@@ -1,12 +1,8 @@
 #pragma once
 
 #include "subsystems/Drivetrain.h"
-#include <frc/smartdashboard/smartdashboard.h>
-#include <math.h>
 #include "Constants.h"
-#include <iostream>
-#include <string.h>
-
+#include <frc2/command/PIDSubsystem.h>
 using namespace frc;
 using namespace std;
 
@@ -15,39 +11,34 @@ using namespace std;
 class Auto : public frc2::SubsystemBase
 {
 public:
-	/*
-	   El autónomo recibe los objetos del chasis, la torre y el disparador para poderlos controlar
-	*/
-	explicit Auto(Drivetrain&);
+	// El autónomo se construye a partir de los subsistemas que va a controlar
+	explicit Auto(Drivetrain &);
 
 	// Función que ocurre todo el tiempo
 	void Periodic() override;
 
-	// Resetear
+	// Resetear sensores
 	void Reset();
 
-	// Mover el chasis
+	// Mover el chasis la distancia seleccionada
 	void Move(float);
 
+	// Girar el chasis hasta el ángulo seleccionado
 	void Turn(float);
 
+	// Quedar a una distancia específica del objetivo
 	void AdjustDistance(float);
 
+	// Alinear con el objetivo
 	void Align();
 
 private:
-	// Cámara pixy
-	//PixySource source;
-
 	// Chasis
 	Drivetrain &chasis;
 
 	double kMoveP = 0.1, kMoveI = 0, kMoveD = 0;
 
 	double kTurnP = 0.1, kTurnI = 0, kTurnD = 0.023;
-
-	float frontToTarget = 0;
-	bool gotLimelightDistance = false;
 
 
 	PIDController movePIDController{kMoveP,kMoveI,kMoveD};
@@ -58,4 +49,7 @@ private:
 	frc::Timer timer;
 
 	double horizontalAngle, verticalAngle, targetArea, targetSkew;
+
+	float frontToTarget = 0;
+	bool gotLimelightDistance = false;
 };

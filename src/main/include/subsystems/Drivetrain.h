@@ -1,27 +1,14 @@
 
 #pragma once
 
-#include <frc2/command/SubsystemBase.h>
-#include <frc/motorcontrol/VictorSP.h>
-#include "frc/Timer.h"
-#include "frc/Encoder.h"
+
 #include "Constants.h"
 #include "frc/drive/DifferentialDrive.h"
 #include "frc/XboxController.h"
-#include <frc/BuiltInAccelerometer.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
-#include <frc/SerialPort.h>
-#include <frc/controller/PIDController.h>
-#include <frc2/command/PIDSubsystem.h>
-#include <rev/SparkMaxPIDController.h>
 #include <rev/CANSparkMax.h>
-#include "networktables/NetworkTable.h"
-#include "networktables/NetworkTableInstance.h"
-#include "networktables/NetworkTableEntry.h"
-#include "networktables/NetworkTableValue.h"
-#include "frc/smartdashboard/SmartDashboard.h"
 #include <frc/ADIS16448_IMU.h>
-
+#include "frc2/command/SubsystemBase.h"
 
 using namespace frc2;
 using namespace rev;
@@ -29,9 +16,8 @@ using namespace frc;
 
 class Drivetrain;
 
-
 // Clase para manejar el chasis
-class Drivetrain : public frc2::SubsystemBase
+class Drivetrain : public SubsystemBase
 {
 public:
 	Drivetrain();
@@ -39,7 +25,7 @@ public:
 	// Función que ocurre todo el tiempo
 	void Periodic() override;
 
-	//Resetear los motores
+	// Resetear los motores
 	void Reset();
 
 	// Manejar según el control
@@ -51,26 +37,15 @@ public:
 	// Activar/Desactivar seguridad
 	void SetSafetyEnabled(bool);
 
-	void RunAuto();
-
-	void ResetAuto();
-
-	// Alinear
-	void Align(float);
-
-	void MoveForward(float);
-
-	void TurnToAngle(float);
-
+	// Obtener el promedio de los cuatro encoders
 	float GetEncoderAverage();
 
+	// Leer el valor del giroscopio
 	float ReadGyro();
 
 private:
 
-	VictorSP testVictor{0};
-
-	
+	// -------------------------------------- Motores ----------------------------------------------------
 	// Motor frente derecho
 	CANSparkMax frontRight{frontRightDeviceID, CANSparkMax::MotorType::kBrushless};
 
@@ -83,14 +58,6 @@ private:
 	// Motor trasero izquierdo
 	CANSparkMax backLeft{backLeftDeviceID, CANSparkMax::MotorType::kBrushless};
 
-	SparkMaxRelativeEncoder encoderFrontRight{frontRight.GetEncoder()};
-
-	SparkMaxRelativeEncoder encoderFrontLeft{frontLeft.GetEncoder()};
-
-	SparkMaxRelativeEncoder encoderBackRight{backRight.GetEncoder()};
-
-	SparkMaxRelativeEncoder encoderBackLeft{backLeft.GetEncoder()};
-
 	// Controlador de motores derechos
 	// Esto se hace para que dos motores hagan el mismo movimiento
 	MotorControllerGroup right{frontRight, backRight};
@@ -98,17 +65,25 @@ private:
 	// Controlador de motores izquierdos
 	MotorControllerGroup left{frontLeft, backLeft};
 
-	// Control
-	XboxController control{0};
-
 	// Objeto de control diferencial
 	DifferentialDrive chasis{right, left};
 
-	bool flag = true;
+	// -------------------------------------- Sensores ----------------------------------------------------
+	// Encoder frente derecho
+	SparkMaxRelativeEncoder encoderFrontRight{frontRight.GetEncoder()};
 
-	// Control de modo de escalada
-	bool climbMode = false;
+	// Encoder frente izquierdo
+	SparkMaxRelativeEncoder encoderFrontLeft{frontLeft.GetEncoder()};
 
+	// Encoder trasero derecho
+	SparkMaxRelativeEncoder encoderBackRight{backRight.GetEncoder()};
+
+	// Encoder trasero izquierdo
+	SparkMaxRelativeEncoder encoderBackLeft{backLeft.GetEncoder()};
+
+	// Giroscopio
 	ADIS16448_IMU gyro;
 
+	// Control
+	XboxController control{0};
 };

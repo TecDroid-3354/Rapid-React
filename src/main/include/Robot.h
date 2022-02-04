@@ -8,16 +8,11 @@
 #pragma once
 
 #include <frc/TimedRobot.h>
-#include <frc2/command/Command.h>
-#include <frc/motorcontrol/VictorSP.h>
-#include "RobotContainer.h"
-#include "cameraserver/CameraServer.h"
+#include <RobotContainer.h>
 
-#include "frc/ADIS16448_IMU.h"
-using namespace cs;
 
 /*
-	Clase que controla las eetapas del robot
+	Clase que controla las etapas del robot
 */
 class Robot : public frc::TimedRobot
 {
@@ -35,9 +30,5 @@ public:
 
 private:
 	/*Objeto del contenedor del robot*/
-	RobotContainer m_container;
-
-	/*Variables para el autónomo*/
-	int step = 0;
-	float p, i, d;
+	RobotContainer robot;
 };

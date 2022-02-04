@@ -10,11 +10,6 @@
 #include <frc2/command/Command.h>
 
 #include "subsystems/Drivetrain.h"
-#include "frc/smartdashboard/SmartDashboard.h"
-#include "frc/XboxController.h"
-#include "frc2/command/button/Button.h"
-#include "frc/Timer.h"
-#include <rev/CANSparkMax.h>
 #include "subsystems/Auto.h"
 #include "subsystems/Shooter.h"
 
@@ -32,39 +27,30 @@ public:
 	/*Mover chasis*/
 	void Drive();
 
-	//Resetear robot
+	// Resetear robot
 	void Reset();
 
-	void Test();
-
+	// Ejecuta el autónomo
 	void RunAuto();
 
+	// Resetea el autónomo
 	void ResetAuto();
 
 	/*Temporizador*/
 	frc::Timer timer;
 
 private:
-	// The robot's subsystems and commands are defined here...
-
-
-	// Objeto de control
-	XboxController control{0};
-
-	/*Objeto de chasis*/
+	// Objeto del chasis
 	Drivetrain chasis;
 
-	/*Objeto de disparador*/
-	//Shooter shooter;
-
-	/*Objeto de torre*/
-	//Intake intake;
-
+	// Objeto del autónomo que recibe el chasis
 	Auto auton{chasis};
 
-	/*Botón para preparar el disparador*/
-	Button bPrepare{[&]
-					{ return control.GetRawButton(cRightBumper); }};
+	/*Objeto de disparador*/
+	// Shooter shooter;
+
+	/*Objeto de torre*/
+	// Intake intake;
 
 	/*Función para configurar las acciones relacionadas a cada botón*/
 	void ConfigureButtonBindings();
