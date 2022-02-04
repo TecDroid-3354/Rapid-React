@@ -9,7 +9,6 @@
 #include "frc2/command/button/JoystickButton.h"
 #include "frc/smartdashboard/SmartDashboard.h"
 
-
 // Al iniciar el robot, configurar los botones
 RobotContainer::RobotContainer()
 {
@@ -22,9 +21,6 @@ void RobotContainer::ConfigureButtonBindings()
 
 	// Al presionar right bumper, preparar el disparador
 	//	bPrepare.WhenPressed(new Prepare(&shooter, &intake));
-	
-
-
 }
 
 // Funciones de manejo del robot
@@ -34,24 +30,27 @@ void RobotContainer::Drive()
 	chasis.Drive();
 
 	// Mover la torre según el control
-	//shooter.Move();
+	// shooter.Move();
 }
 
 void RobotContainer::Test()
 {
 }
 
-void RobotContainer::Reset(){
+void RobotContainer::Reset()
+{
 	chasis.Reset();
-	//shooter.Reset();
-	//intake.Reset();
+	// shooter.Reset();
+	// intake.Reset();
 }
 
-void RobotContainer::RunAuto(){
-	//auton.Move(50);
+void RobotContainer::RunAuto()
+{
+	// auton.Move(50);
 	auton.Turn(90);
 }
 
-void RobotContainer::ResetAuto(){
+void RobotContainer::ResetAuto()
+{
 	auton.Reset();
 }

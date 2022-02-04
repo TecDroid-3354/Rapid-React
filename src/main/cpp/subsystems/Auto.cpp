@@ -19,36 +19,37 @@ using namespace nt;
 void Auto::Run(){
 
 	float requiredDistance = 200;
-	
+
 	Align(100);
-	
+
 
 	float error = fabs(fabs(encoderFrontRight.GetPosition()-encoderFrontLeft.GetPosition())/2*kDistancePerRotation-requiredDistance);
-	
+
 	if(error>0.1){
 		MoveForward(requiredDistance);
 	}
 
-	
+
 	TurnToAngle(90);
-	
+
 	SmartDashboard::PutString("Running","Running");
 	//|SmartDashboard::PutNumber("Error",error);
-    SmartDashboard::PutNumber("SetPoint", requiredDistance);
+	SmartDashboard::PutNumber("SetPoint", requiredDistance);
 
 	float victorSpeed = 0.2;
 	testVictor.Set(victorSpeed);
 	SmartDashboard::PutNumber("Test Motor Speed", testVictor.Get());
 	SmartDashboard::PutNumber("Test Victor Channel", testVictor.GetChannel());
 	SmartDashboard::PutString("Test Victor's dear name", testVictor.GetName());
-		
+
 }*/
 
-Auto::Auto(Drivetrain &ch):chasis{ch}{
-
+Auto::Auto(Drivetrain &ch) : chasis{ch}
+{ // El :chasis{ch}  es como poner chasis = ch adentro de la función
 }
 
-void Auto::Periodic(){
+void Auto::Periodic()
+{
 	/*
 
 	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
@@ -63,46 +64,66 @@ void Auto::Periodic(){
 	SmartDashboard::PutNumber("Skew", targetSkew);*/
 }
 
+void Auto::Move(float distance)
+{
 
-void Auto::Move(float distance){
-	
+	// Indicarle al controlador la distancia  a recorrer
 	movePID.SetSetpoint(distance);
 
-	movePID.Enable();
-
+	// Mover el chasis hasta que los encoders lleguen a la distancia correcta
+	if (!movePID.AtSetpoint())
+	{
+		movePID.Enable();
+	}
+	else
+	{
+		movePID.Disable();
+	}
 }
 
+void Auto::Turn(float angle)
+{
 
-void Auto::Turn(float angle){
+	// Indicarle al controlador el ángulo a girar
 	turnPID.SetSetpoint(angle);
 
-	if(!turnPID.AtSetpoint()){
+	// Girar el chasis hasta que el giroscopio indique el ángulo correcto
+	if (!turnPID.AtSetpoint())
+	{
 		turnPID.Enable();
-	} else{
+	}
+	else
+	{
 		turnPID.Disable();
 	}
 }
 
+// Resetear todo
+void Auto::Reset()
+{
 
-
-void Auto::Reset(){
-
+	// Resetear motores y sensores
 	chasis.Reset();
 
+	// Resetear controlador PID de movimiento
 	movePID.Disable();
 	movePID.GetController().Reset();
+
+	// Resetear controlador PID de giro
+	turnPID.Disable();
+	turnPID.GetController().Reset();
 }
 
 /*
 
 void Auto::AdjustDistance(float requiredDistance){
 	if(frontToTarget == 0 && !gotLimelightDistance){
-		
-		
+
+
 		float verticalAngleRadians = verticalAngle*M_PI/180;
 
 		frontToTarget = (kObjectiveHeight-kLimelightHeight)/tan(kLimelightAngle+verticalAngleRadians)-kLimelightToFront;
-		
+
 		if(frontToTarget != 0){
 			gotLimelightDistance = true;
 		}
@@ -117,5 +138,5 @@ void Auto::AdjustDistance(float requiredDistance){
 }
 
 void Auto::Align(){
-	
+
 }*/

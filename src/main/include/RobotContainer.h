@@ -33,35 +33,30 @@ public:
 	/*Mover chasis*/
 	void Drive();
 
-	//Resetear robot
+	// Resetear robot
 	void Reset();
 
-	void Test();
-
+	// Ejecuta el autónomo
 	void RunAuto();
 
+	// Resetea el autónomo
 	void ResetAuto();
 
 	/*Temporizador*/
 	frc::Timer timer;
 
 private:
-	// The robot's subsystems and commands are defined here...
-
-
-	// Objeto de control
-	XboxController control{0};
-
-	/*Objeto de chasis*/
+	// Objeto del chasis
 	Drivetrain chasis;
 
+	// Objeto del autónomo que recibe el chasis
+	Auto auton{chasis};
+
 	/*Objeto de disparador*/
-	//Shooter shooter;
+	// Shooter shooter;
 
 	/*Objeto de torre*/
-	//Intake intake;
-
-	Auto auton{chasis};
+	// Intake intake;
 
 	/*Botón para preparar el disparador*/
 	Button bPrepare{[&]

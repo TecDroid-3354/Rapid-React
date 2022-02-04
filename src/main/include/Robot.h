@@ -17,7 +17,7 @@
 using namespace cs;
 
 /*
-	Clase que controla las eetapas del robot
+	Clase que controla las etapas del robot
 */
 class Robot : public frc::TimedRobot
 {
@@ -35,9 +35,5 @@ public:
 
 private:
 	/*Objeto del contenedor del robot*/
-	RobotContainer m_container;
-
-	/*Variables para el autónomo*/
-	int step = 0;
-	float p, i, d;
+	RobotContainer robot;
 };

@@ -27,26 +27,25 @@ void Robot::RobotInit()
 {
 
 	// Obtener cámara 1
-	//cs::UsbCamera cam = frc::CameraServer::GetInstance()->StartAutomaticCapture(0);
+	// cs::UsbCamera cam = frc::CameraServer::GetInstance()->StartAutomaticCapture(0);
 
 	// Asignar resolución
-	//cam.SetResolution(640, 480);
+	// cam.SetResolution(640, 480);
 
 	// Asignar FPS
-	//cam.SetFPS(40);
+	// cam.SetFPS(40);
 
 	// Obtener cámara 2
-	//cs::UsbCamera cam2 = frc::CameraServer::GetInstance()->StartAutomaticCapture(1);
+	// cs::UsbCamera cam2 = frc::CameraServer::GetInstance()->StartAutomaticCapture(1);
 
 	// Asignar resolución
-	//cam2.SetResolution(640, 480);
+	// cam2.SetResolution(640, 480);
 
 	// Asignar FPS
-	//cam2.SetFPS(40);
+	// cam2.SetFPS(40);
 
-	
 	// Restaurar a parámetros de fábrica para que siempre empiecen "desde cero"
-	m_container.Reset();
+	robot.Reset();
 }
 
 // Periódicamente obtener el siguiente comando
@@ -57,13 +56,12 @@ void Robot::RobotPeriodic()
 
 void Robot::DisabledInit()
 {
-	m_container.Reset();
+	robot.Reset();
 }
 
 // Resetear el robot cuando se desactiva
 void Robot::DisabledPeriodic()
 {
-
 }
 
 // Inicializar autónomo
@@ -71,30 +69,27 @@ void Robot::AutonomousInit()
 {
 
 	// Resetear el paso
-	m_container.ResetAuto();
-
+	robot.ResetAuto();
 }
 
 // Función del autónomo
 void Robot::AutonomousPeriodic()
 {
-	m_container.RunAuto();
+	robot.RunAuto();
 }
 
 // Inicializar teleoperado
 void Robot::TeleopInit()
 {
-m_container.Reset();
-
+	robot.Reset();
 }
 
 // Teleoperado
 void Robot::TeleopPeriodic()
 {
 
-
 	// Manejar robot
-	m_container.Drive();
+	robot.Drive();
 }
 
 void Robot::TestInit()
@@ -103,8 +98,6 @@ void Robot::TestInit()
 void Robot::TestPeriodic()
 {
 }
-
-
 
 #ifndef RUNNING_FRC_TESTS
 int main()
