@@ -6,8 +6,6 @@
 /*----------------------------------------------------------------------------*/
 
 #include "RobotContainer.h"
-#include "frc2/command/button/JoystickButton.h"
-#include "frc/smartdashboard/SmartDashboard.h"
 
 // Al iniciar el robot, configurar los botones
 RobotContainer::RobotContainer()
@@ -31,10 +29,6 @@ void RobotContainer::Drive()
 
 	// Mover la torre según el control
 	// shooter.Move();
-}
-
-void RobotContainer::Test()
-{
 }
 
 void RobotContainer::Reset()

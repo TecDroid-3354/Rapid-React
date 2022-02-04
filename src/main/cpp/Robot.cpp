@@ -6,21 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Robot.h"
-#include "subsystems/Drivetrain.h"
-
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
-#include <frc/Joystick.h>
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <RobotContainer.h>
-#include <frc/drive/DifferentialDrive.h>
-#include <frc/TimedRobot.h>
-#include <frc/motorcontrol/PWMSparkMax.h>
-#include <rev/CANSparkMax.h>
-#include "frc/shuffleboard/Shuffleboard.h"
 
 using namespace frc;
-using namespace rev;
+
 
 // Inicializar el robot
 void Robot::RobotInit()

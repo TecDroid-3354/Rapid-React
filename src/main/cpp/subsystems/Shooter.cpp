@@ -1,6 +1,5 @@
 #include "subsystems/Shooter.h"
-#include <frc/smartdashboard/smartdashboard.h>
-#include <frc/Timer.h>
+
 #include "Constants.h"
 using namespace frc;
 

@@ -3,6 +3,9 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <math.h>
+
+
 //---------------------------Limelight----------------------------------
 
 constexpr int kObjectiveHeight = 135;

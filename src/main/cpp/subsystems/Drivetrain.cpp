@@ -7,10 +7,7 @@
 
 #include "subsystems/Drivetrain.h"
 #include <frc/smartdashboard/smartdashboard.h>
-#include <math.h>
 #include "Constants.h"
-#include <iostream>
-#include <string.h>
 
 using namespace frc;
 using namespace std;

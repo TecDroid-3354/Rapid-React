@@ -10,11 +10,6 @@
 #include <frc2/command/Command.h>
 
 #include "subsystems/Drivetrain.h"
-#include "frc/smartdashboard/SmartDashboard.h"
-#include "frc/XboxController.h"
-#include "frc2/command/button/Button.h"
-#include "frc/Timer.h"
-#include <rev/CANSparkMax.h>
 #include "subsystems/Auto.h"
 #include "subsystems/Shooter.h"
 

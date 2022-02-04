@@ -1,17 +1,13 @@
 #pragma once
 
 #include "subsystems/Drivetrain.h"
-#include <frc/smartdashboard/smartdashboard.h>
-#include <math.h>
 #include "Constants.h"
-#include <iostream>
-#include <string.h>
 #include "subsystems/PIDSubsystems/LimelightPID.h"
 #include "subsystems/PIDSubsystems/TurnPID.h"
 #include "subsystems/PIDSubsystems/MovePID.h"
 
 using namespace frc;
-using namespace std;
+using namespace frc2;
 
 /*Clase para controlar el autónomo*/
 class Auto : public frc2::SubsystemBase

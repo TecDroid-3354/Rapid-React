@@ -1,24 +1,14 @@
 
 #pragma once
-#include <frc/motorcontrol/VictorSP.h>
-#include "frc/Timer.h"
-#include "frc/Encoder.h"
+
+
 #include "Constants.h"
 #include "frc/drive/DifferentialDrive.h"
 #include "frc/XboxController.h"
-#include <frc/BuiltInAccelerometer.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
-#include <frc/SerialPort.h>
-#include <frc/controller/PIDController.h>
-
-#include <rev/SparkMaxPIDController.h>
 #include <rev/CANSparkMax.h>
-#include "networktables/NetworkTable.h"
-#include "networktables/NetworkTableInstance.h"
-#include "networktables/NetworkTableEntry.h"
-#include "networktables/NetworkTableValue.h"
-#include "frc/smartdashboard/SmartDashboard.h"
 #include <frc/ADIS16448_IMU.h>
+#include "frc2/command/SubsystemBase.h"
 
 using namespace frc2;
 using namespace rev;
@@ -27,7 +17,7 @@ using namespace frc;
 class Drivetrain;
 
 // Clase para manejar el chasis
-class Drivetrain : public frc2::SubsystemBase
+class Drivetrain : public SubsystemBase
 {
 public:
 	Drivetrain();
@@ -54,7 +44,6 @@ public:
 	float ReadGyro();
 
 private:
-	VictorSP testVictor{0};
 
 	// -------------------------------------- Motores ----------------------------------------------------
 	// Motor frente derecho

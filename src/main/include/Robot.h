@@ -8,13 +8,8 @@
 #pragma once
 
 #include <frc/TimedRobot.h>
-#include <frc2/command/Command.h>
-#include <frc/motorcontrol/VictorSP.h>
-#include "RobotContainer.h"
-#include "cameraserver/CameraServer.h"
+#include <RobotContainer.h>
 
-#include "frc/ADIS16448_IMU.h"
-using namespace cs;
 
 /*
 	Clase que controla las etapas del robot
