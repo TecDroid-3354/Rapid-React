@@ -11,15 +11,15 @@ MovePID::MovePID(Drivetrain &ch, double kP, double kI, double kD)
 }
 
 // Obtiene la variable de control, que es el promedio de los encoders
-double MovePID::GetMeasurement() override
+double MovePID::GetMeasurement()
 {
 	return chasis.GetEncoderAverage();
 }
 
 // Utiliza el output generado por el controlador para hacer el chasis avanzar
-void MovePID::UseOutput(double output, double setpoint) override
+void MovePID::UseOutput(double output, double setpoint)
 {
-	chasis.Drive(0, clamp(output, -0.4, 0.4)); // Drive recibe un valor de giro y un valor de avance, estamos utilizando el output como el valor de avance, limitado a una velocidad máxima seleccionada
+	chasis.Drive(0, std::clamp(output, -0.4, 0.4)); // Drive recibe un valor de giro y un valor de avance, estamos utilizando el output como el valor de avance, limitado a una velocidad máxima seleccionada
 }
 
 // Indica si el controlador ya llegó a la meta

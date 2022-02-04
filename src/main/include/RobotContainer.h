@@ -16,7 +16,6 @@
 #include "frc/Timer.h"
 #include <rev/CANSparkMax.h>
 #include "subsystems/Auto.h"
-#include "subsystems/Intake.h"
 #include "subsystems/Shooter.h"
 
 using namespace frc2;
@@ -57,10 +56,6 @@ private:
 
 	/*Objeto de torre*/
 	// Intake intake;
-
-	/*Botón para preparar el disparador*/
-	Button bPrepare{[&]
-					{ return control.GetRawButton(cRightBumper); }};
 
 	/*Función para configurar las acciones relacionadas a cada botón*/
 	void ConfigureButtonBindings();

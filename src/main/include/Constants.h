@@ -16,6 +16,7 @@ static const int frontRightDeviceID = 1;
 static const int frontLeftDeviceID = 2;
 static const int backRightDeviceID = 3;
 static const int backLeftDeviceID = 4;
+static const int shooterDeviceID = 5;
 
 //------------------------------Speeds----------------------------------
 
@@ -35,7 +36,7 @@ constexpr float kMinOutput = -0.4;
 //-----------------------------Constants---------------------------------
 
 constexpr double kDistancePerRotation = 3.141592653589 * 6 * 2.54 / 10.71; // PI por diámetro de llanta en pulgadas por cm a in entre la reducción de la caja
-constepxr double kP = 0.1;
+constexpr double kP = 0.1;
 constexpr double kI = 1e-4;
 constexpr double kD = 1;
 constexpr double kIz = 0;
