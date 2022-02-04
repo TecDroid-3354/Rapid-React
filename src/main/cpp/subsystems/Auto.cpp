@@ -66,21 +66,21 @@ void Auto::Periodic(){
 
 void Auto::Move(float distance){
 	
-	movePID.SetSetpoint(distance);
+	movePIDController.SetSetpoint(-distance);
+	
+	double output = movePIDController.Calculate(-chasis.GetEncoderAverage());
 
-	movePID.Enable();
-
+	chasis.Drive(0,clamp(output,-0.7,0.7));
 }
 
 
 void Auto::Turn(float angle){
-	turnPID.SetSetpoint(angle);
 
-	if(!turnPID.AtSetpoint()){
-		turnPID.Enable();
-	} else{
-		turnPID.Disable();
-	}
+	turnPIDController.SetSetpoint(-angle);
+	double output = turnPIDController.Calculate(chasis.ReadGyro());
+
+	chasis.Drive(clamp(output,-0.6,0.6),0);
+	
 }
 
 
@@ -89,8 +89,8 @@ void Auto::Reset(){
 
 	chasis.Reset();
 
-	movePID.Disable();
-	movePID.GetController().Reset();
+	movePIDController.Reset();
+	
 }
 
 /*

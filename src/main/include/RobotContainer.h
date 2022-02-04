@@ -16,7 +16,6 @@
 #include "frc/Timer.h"
 #include <rev/CANSparkMax.h>
 #include "subsystems/Auto.h"
-#include "subsystems/Intake.h"
 #include "subsystems/Shooter.h"
 
 using namespace frc2;
