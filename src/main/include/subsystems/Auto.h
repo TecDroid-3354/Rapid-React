@@ -40,10 +40,13 @@ private:
 
 	double kTurnP = 0.1, kTurnI = 0, kTurnD = 0.023;
 
+	double kLimeP = 0.1, kLimeI = 0, kLimeD = 0.01;
 
-	PIDController movePIDController{kMoveP,kMoveI,kMoveD};
+	PIDController movePID{kMoveP,kMoveI,kMoveD};
 
-	PIDController turnPIDController{kTurnP,kTurnI,kTurnD};
+	PIDController turnPID{kTurnP,kTurnI,kTurnD};
+
+	PIDController limelightPID{kLimeP, kLimeI, kLimeD};
 
 	// Temporizador
 	frc::Timer timer;

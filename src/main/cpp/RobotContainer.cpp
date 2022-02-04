@@ -41,7 +41,8 @@ void RobotContainer::Reset()
 void RobotContainer::RunAuto()
 {
 	// auton.Move(50);
-	auton.Turn(90);
+	//auton.Turn(90);
+	auton.Align();
 }
 
 void RobotContainer::ResetAuto()

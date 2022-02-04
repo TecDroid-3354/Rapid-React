@@ -62,9 +62,9 @@ void Auto::Periodic()
 
 void Auto::Move(float distance){
 	
-	movePIDController.SetSetpoint(-distance);
+	movePID.SetSetpoint(-distance);
 	
-	double output = movePIDController.Calculate(-chasis.GetEncoderAverage());
+	double output = movePID.Calculate(-chasis.GetEncoderAverage());
 
 	chasis.Drive(0,clamp(output,-0.7,0.7));
 }
@@ -72,8 +72,8 @@ void Auto::Move(float distance){
 
 void Auto::Turn(float angle){
 
-	turnPIDController.SetSetpoint(-angle);
-	double output = turnPIDController.Calculate(chasis.ReadGyro());
+	turnPID.SetSetpoint(-angle);
+	double output = turnPID.Calculate(chasis.ReadGyro());
 
 	chasis.Drive(clamp(output,-0.6,0.6),0);
 	
@@ -86,8 +86,9 @@ void Auto::Reset()
 	// Resetear motores y sensores
 	chasis.Reset();
 
-	movePIDController.Reset();
-	
+	movePID.Reset();
+
+	limelightPID.Reset();
 }
 
 /*
@@ -112,7 +113,15 @@ void Auto::AdjustDistance(float requiredDistance){
 	}
 
 }
-
+*/
 void Auto::Align(){
 
-}*/
+	limelightPID.SetSetpoint(0);
+
+	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+
+	double outputTurn = limelightPID.Calculate(-table->GetNumber("tx", 0.0));
+	//double outputMove = limelightPID.Calculate(-table->GetNumber("ty", 0.0));
+
+ 	chasis.Drive(clamp(outputTurn, -0.4, 0.4), 0);
+}
