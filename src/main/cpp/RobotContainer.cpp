@@ -42,7 +42,7 @@ void RobotContainer::RunAuto()
 {
 	// auton.Move(50);
 	//auton.Turn(90);
-	auton.Align();
+	auton.Run();
 }
 
 void RobotContainer::ResetAuto()

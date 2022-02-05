@@ -42,6 +42,8 @@ void Auto::Run(){
 
 Auto::Auto(Drivetrain &ch) : chasis{ch}
 { // El :chasis{ch}  es como poner chasis = ch adentro de la función
+
+	
 }
 
 void Auto::Periodic()
@@ -60,23 +62,29 @@ void Auto::Periodic()
 	SmartDashboard::PutNumber("Skew", targetSkew);*/
 }
 
-void Auto::Move(float distance){
+bool Auto::Move(float distance){
 	
 	movePID.SetSetpoint(-distance);
 	
 	double output = movePID.Calculate(-chasis.GetEncoderAverage());
 
-	chasis.Drive(0,clamp(output,-0.7,0.7));
+	chasis.Drive(0,clamp(output,-0.4,0.4));
+
+	SmartDashboard::PutString("Auto Step", "Move");
+	return movePID.AtSetpoint();
 }
 
 
-void Auto::Turn(float angle){
+bool Auto::Turn(float angle){
 
-	turnPID.SetSetpoint(-angle);
+	turnPID.SetSetpoint(angle);
 	double output = turnPID.Calculate(chasis.ReadGyro());
 
-	chasis.Drive(clamp(output,-0.6,0.6),0);
-	
+	chasis.Drive(clamp(output,-0.4,0.4),0);
+
+	SmartDashboard::PutString("Auto Step", "Turn");
+
+	return turnPID.AtSetpoint();
 }
 
 // Resetear todo
@@ -87,10 +95,45 @@ void Auto::Reset()
 	chasis.Reset();
 
 	movePID.Reset();
+	movePID.SetTolerance(1),
+
+	turnPID.Reset();
+	turnPID.SetTolerance(1);
 
 	limelightPID.Reset();
+
+	
 }
 
+void Auto::Run(){
+
+	switch(movements[autoStep]){
+		case 'a':
+			SmartDashboard::PutBoolean("Done", Align(0));
+			if(Align(0)){
+				Reset();
+				autoStep++;
+			}
+			break;
+		
+		case 'm':
+			SmartDashboard::PutBoolean("Done", Move(setpoints[autoStep]));
+			if(Move(setpoints[autoStep])){
+				Reset();
+				autoStep++;
+			}
+			break;
+
+		case 't':
+			SmartDashboard::PutBoolean("Done", Turn(setpoints[autoStep]));
+			if(Turn(setpoints[autoStep])){
+				Reset();
+				autoStep++;
+			}
+			break;
+	}
+
+}
 /*
 
 void Auto::AdjustDistance(float requiredDistance){
@@ -114,7 +157,7 @@ void Auto::AdjustDistance(float requiredDistance){
 
 }
 */
-void Auto::Align(){
+bool Auto::Align(float setpoint = 0){
 
 	limelightPID.SetSetpoint(0);
 
@@ -124,4 +167,6 @@ void Auto::Align(){
 	//double outputMove = limelightPID.Calculate(-table->GetNumber("ty", 0.0));
 
  	chasis.Drive(clamp(outputTurn, -0.4, 0.4), 0);
+
+	return limelightPID.AtSetpoint();
 }
