@@ -6,6 +6,7 @@
 #include "networktables/NetworkTableEntry.h"
 #include "networktables/NetworkTableValue.h"
 #include "wpi/span.h"
+#include <vector>
 
 using namespace frc;
 using namespace std;
@@ -43,11 +44,15 @@ void Auto::Run(){
 Auto::Auto(Drivetrain &ch) : chasis{ch}
 { // El :chasis{ch}  es como poner chasis = ch adentro de la función
 
-	
 }
 
 void Auto::Periodic()
 {
+
+	// actionList.push_back(Auto::Move);
+	// actionList.push_back(Auto::Turn);
+	// actionList.push_back(Auto::Align);
+
 	/*
 
 	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");

@@ -8,13 +8,14 @@
 using namespace frc;
 using namespace std;
 
-
-
-
 /*Clase para controlar el autónomo*/
 class Auto : public frc2::SubsystemBase
 {
 public:
+
+	// Vector que contiene referencias a todas las funciones que se ejecutarán durante el periodo autónomo
+	//std::vector<bool(Auto::*)(float)> actionList;
+
 	// El autónomo se construye a partir de los subsistemas que va a controlar
 	explicit Auto(Drivetrain &);
 
