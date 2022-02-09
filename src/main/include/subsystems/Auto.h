@@ -47,11 +47,7 @@ private:
 	// Chasis
 	Drivetrain &chasis;
 
-	const double kMoveP = 0.1, kMoveI = 0, kMoveD = 0;
 
-	const double kTurnP = 0.1, kTurnI = 0, kTurnD = 0.01;
-
-	const double kLimeP = 0.1, kLimeI = 0, kLimeD = 0.001;
 
 	PIDController movePID{kMoveP,kMoveI,kMoveD};
 

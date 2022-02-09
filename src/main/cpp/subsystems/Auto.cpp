@@ -169,17 +169,18 @@ void Auto::DeterminePosition(){
 
 	}
 	*/
-	bool Auto::Align(float setpoint = 0)
-	{
 
-		limelightPID.SetSetpoint(0);
+bool Auto::Align(float setpoint = 0)
+{
 
-		std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
+	limelightPID.SetSetpoint(0);
 
-		double outputTurn = limelightPID.Calculate(-table->GetNumber("tx", 0.0));
-		// double outputMove = limelightPID.Calculate(-table->GetNumber("ty", 0.0));
+	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
 
-		chasis.Drive(clamp(outputTurn, -0.4, 0.4), 0);
+	double outputTurn = limelightPID.Calculate(-table->GetNumber("tx", 0.0));
+	// double outputMove = limelightPID.Calculate(-table->GetNumber("ty", 0.0));
 
-		return limelightPID.AtSetpoint();
+	chasis.Drive(clamp(outputTurn, -0.4, 0.4), 0);
+
+	return limelightPID.AtSetpoint();
 }

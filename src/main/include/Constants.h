@@ -22,10 +22,19 @@ static const int frontLeftDeviceID = 2;
 static const int backRightDeviceID = 3;
 static const int backLeftDeviceID = 4;
 static const int shooterDeviceID = 5;
+static const int feederDeviceID = 6;
+
+//------------------------------Ports----------------------------------
+
+constexpr int pEncoderShooterA = 0;
+constexpr int pEncoderShooterB = 1;
+constexpr int pEncoderTurretA = 2;
+constexpr int pEncoderTurretB = 3;
 
 //------------------------------Speeds----------------------------------
 
 constexpr float kAutoSpeed = 0.4;
+constexpr float kFeederSpeed = 1;
 
 //-----------------------------Constants---------------------------------
 
@@ -36,6 +45,16 @@ constexpr double kD = 1;
 constexpr double kIz = 0;
 constexpr double kFF = 0;
 
+
+//-----------------------------PID Constants---------------------------------
+
+constexpr double kMoveP = 0.1, kMoveI = 0, kMoveD = 0;
+
+constexpr double kTurnP = 0.1, kTurnI = 0, kTurnD = 0.01;
+
+constexpr double kLimeP = 0.1, kLimeI = 0, kLimeD = 0.001;
+
+constexpr double kShooterP = 0, kShooterI = 0, kShooterD = 0;
 
 
 //---------------------------Control Map---------------------------------
