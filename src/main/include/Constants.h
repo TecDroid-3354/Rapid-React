@@ -3,10 +3,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-
 #include <math.h>
-
-
 
 //---------------------------Limelight----------------------------------
 
@@ -35,6 +32,7 @@ constexpr int pEncoderTurretB = 3;
 
 constexpr float kAutoSpeed = 0.4;
 constexpr float kFeederSpeed = 1;
+constexpr float kIntakeSpeed = 1;
 
 //-----------------------------Constants---------------------------------
 
@@ -45,7 +43,6 @@ constexpr double kD = 1;
 constexpr double kIz = 0;
 constexpr double kFF = 0;
 
-
 //-----------------------------PID Constants---------------------------------
 
 constexpr double kMoveP = 0.1, kMoveI = 0, kMoveD = 0;
@@ -55,7 +52,6 @@ constexpr double kTurnP = 0.1, kTurnI = 0, kTurnD = 0.01;
 constexpr double kLimeP = 0.1, kLimeI = 0, kLimeD = 0.001;
 
 constexpr double kShooterP = 0, kShooterI = 0, kShooterD = 0;
-
 
 //---------------------------Control Map---------------------------------
 

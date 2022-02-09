@@ -8,25 +8,16 @@ Intake::Intake(){
 
 };
 
-
-void Intake::Periodic(){
-
-
+void Intake::Periodic()
+{
 }
 
-    
-void Intake::Reset(){
-
-
+void Intake::Reset()
+{
 }
 
+void Intake::Move()
+{
 
-void Intake::Move(){
-
-
-
+	motor.Set(kIntakeSpeed);
 }
-
-
-
-
