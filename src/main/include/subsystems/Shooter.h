@@ -34,6 +34,14 @@ public:
 
 	double CalculateDistance(float);
 
+	void ResetServos();
+
+	void ResetMotors();
+
+	void ResetEncoder();
+
+	void Reset();
+
 private:
 	// Motor del disparador
 	CANSparkMax mShooter{shooterDeviceID, CANSparkMax::MotorType::kBrushed};

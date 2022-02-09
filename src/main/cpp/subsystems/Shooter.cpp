@@ -64,3 +64,27 @@ void Shooter::SetServos(float length)
 	mServoRight.Set(length);
 	mServoLeft.Set(length);
 }
+
+void Shooter::ResetServos()
+{
+	mServoRight.Set(0);
+	mServoRight.Set(0);
+};
+
+void Shooter::ResetMotors()
+{
+	mFeeder.RestoreFactoryDefaults();
+	mShooter.RestoreFactoryDefaults();
+};
+
+void Shooter::ResetEncoder()
+{
+	encoder.Reset();
+};
+
+void Shooter::Reset()
+{
+	ResetServos();
+	ResetEncoder();
+	ResetMotors();
+}
