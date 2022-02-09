@@ -10,14 +10,14 @@ Intake::Intake(){
 
 void Intake::Periodic()
 {
+	Move(control.GetRightAxisX())
 }
 
 void Intake::Reset()
 {
 }
 
-void Intake::Move()
+void Intake::Move(float speed)
 {
-
-	motor.Set(kIntakeSpeed);
+	motor.Set(speed * kIntakeSpeed);
 }

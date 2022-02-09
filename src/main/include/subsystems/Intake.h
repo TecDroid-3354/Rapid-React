@@ -3,7 +3,7 @@
 #include <frc/Timer.h>
 #include "Constants.h"
 #include "frc2/command/SubsystemBase.h"
-#include <rev/CANSparkMax.h>
+#include <frc/motorcontrol/VictorSP.h>
 #include "Constants.h"
 #include "frc/XboxController.h"
 
@@ -11,23 +11,22 @@ using namespace frc;
 using namespace frc2;
 using namespace rev;
 
-class Intake : public SubsystemBase{
+class Intake : public SubsystemBase
+{
 
+public:
+	Intake();
 
-    public:
-        Intake();
+	void Periodic();
 
-        void Periodic();
+	void Reset();
 
-        void Reset();
+	void Move(float speed);
 
-        void Move();
-    
-    private:
+private:
+	// Motor del intake
+	VictorSP motor{pIntake};
 
-        // Motor del intake
-	    CANSparkMax motor{shooterDeviceID, CANSparkMax::MotorType::kBrushed};
-
-	    // Control
-	    XboxController control{0};
+	// Control
+	XboxController control{0};
 };
