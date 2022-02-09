@@ -7,6 +7,7 @@
 #include <frc/Encoder.h>
 #include <frc2/command/PIDSubsystem.h>
 #include <networktables/NetworkTable.h>
+#include <frc/PWM.h>
 
 using namespace frc;
 using namespace frc2;
@@ -27,6 +28,8 @@ public:
 
 	void Feed();
 
+	void SetServos(float length);
+
 	double CalculateRPM();
 
 	double CalculateDistance(float);
@@ -40,6 +43,10 @@ private:
 	Encoder encoder{pEncoderShooterA, pEncoderShooterB, false};
 
 	PIDController speedPID{kShooterP, kShooterI, kShooterD};
+
+	Servo mServoRight{pServoRight};
+
+	Servo mServoLeft{pServoLeft};
 
 	// Control
 	XboxController control{0};

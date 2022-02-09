@@ -14,14 +14,21 @@ constexpr float kLimelightToFront = 68;
 
 //----------------------------Spark-IDs---------------------------------
 
-static const int frontRightDeviceID = 1;
-static const int frontLeftDeviceID = 2;
-static const int backRightDeviceID = 3;
-static const int backLeftDeviceID = 4;
-static const int shooterDeviceID = 5;
-static const int feederDeviceID = 6;
+constexpr int frontRightDeviceID = 1;
+constexpr int frontLeftDeviceID = 2;
+constexpr int backRightDeviceID = 3;
+constexpr int backLeftDeviceID = 4;
+constexpr int shooterDeviceID = 5;
+constexpr int feederDeviceID = 6;
 
-//------------------------------Ports----------------------------------
+//----------------------------PWM Ports---------------------------------
+
+constexpr pIntake = 0;
+constexpr pTurret = 1;
+constexpr pServoRight = 2;
+constexpr pServoLeft = 3;
+
+//------------------------------DIO Ports----------------------------------
 
 constexpr int pEncoderShooterA = 0;
 constexpr int pEncoderShooterB = 1;
