@@ -15,6 +15,10 @@ using namespace nt;
 
 Drivetrain::Drivetrain()
 {
+	encoderFrontRight.SetPositionConversionFactor(kDistancePerRotation);
+	encoderFrontLeft.SetPositionConversionFactor(kDistancePerRotation);
+	encoderBackRight.SetPositionConversionFactor(kDistancePerRotation);
+	encoderBackLeft.SetPositionConversionFactor(kDistancePerRotation);
 }
 
 void Drivetrain::Periodic()
@@ -70,21 +74,25 @@ void Drivetrain::Reset()
 	frontLeft.RestoreFactoryDefaults();
 	backRight.RestoreFactoryDefaults();
 
-	// ------------------------------- Resetear encoders -------------------------------------
+	ResetGyro();
+	ResetEncoders();
+}
+
+void Drivetrain::ResetGyro(){
+	gyro.Reset();
+}
+
+void Drivetrain::ResetEncoders(){
 	encoderFrontLeft.SetPosition(0);
 	encoderBackLeft.SetPosition(0);
 	encoderFrontRight.SetPosition(0);
 	encoderBackRight.SetPosition(0);
-
-	// Resetear giroscopio
-	gyro.Reset();
 }
-
 // Promedio de los encoders
 float Drivetrain::GetEncoderAverage()
 {
 	// Los valores de los encoders derecho están negativos porque apuntan al lado contrario
-	return ((encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition()) - (encoderBackRight.GetPosition() + encoderFrontRight.GetPosition())) * kDistancePerRotation / 4;
+	return ((encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition()) - (encoderBackRight.GetPosition() + encoderFrontRight.GetPosition())) / 4;
 }
 
 // Leer el giroscopio

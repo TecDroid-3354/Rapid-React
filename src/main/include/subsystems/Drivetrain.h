@@ -28,6 +28,10 @@ public:
 	// Resetear los motores
 	void Reset();
 
+	void ResetGyro();
+
+	void ResetEncoders();
+
 	// Manejar según el control
 	void Drive();
 

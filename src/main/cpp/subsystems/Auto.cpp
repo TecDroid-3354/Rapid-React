@@ -49,10 +49,6 @@ Auto::Auto(Drivetrain &ch) : chasis{ch}
 void Auto::Periodic()
 {
 
-	// actionList.push_back(Auto::Move);
-	// actionList.push_back(Auto::Turn);
-	// actionList.push_back(Auto::Align);
-
 	/*
 
 	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
@@ -67,25 +63,25 @@ void Auto::Periodic()
 	SmartDashboard::PutNumber("Skew", targetSkew);*/
 }
 
-bool Auto::Move(float distance){
+bool Auto::Move(float distance, float speed){
 	
 	movePID.SetSetpoint(-distance);
 	
-	double output = movePID.Calculate(-chasis.GetEncoderAverage());
+	float output = movePID.Calculate(-chasis.GetEncoderAverage());
 
-	chasis.Drive(0,clamp(output,-0.4,0.4));
+	chasis.Drive(0,clamp(output,-speed,speed));
 
 	SmartDashboard::PutString("Auto Step", "Move");
 	return movePID.AtSetpoint();
 }
 
 
-bool Auto::Turn(float angle){
+bool Auto::Turn(float angle, float speed){
 
 	turnPID.SetSetpoint(angle);
-	double output = turnPID.Calculate(chasis.ReadGyro());
+	float output = turnPID.Calculate(chasis.ReadGyro());
 
-	chasis.Drive(clamp(output,-0.4,0.4),0);
+	chasis.Drive(clamp(output,-speed,speed),0);
 
 	SmartDashboard::PutString("Auto Step", "Turn");
 
@@ -97,13 +93,15 @@ void Auto::Reset()
 {
 
 	// Resetear motores y sensores
+	DeterminePosition();
+
 	chasis.Reset();
 
 	movePID.Reset();
-	movePID.SetTolerance(1),
+	movePID.SetTolerance(0.1),
 
 	turnPID.Reset();
-	turnPID.SetTolerance(1);
+	turnPID.SetTolerance(0.1);
 
 	limelightPID.Reset();
 
@@ -112,66 +110,76 @@ void Auto::Reset()
 
 void Auto::Run(){
 
-	switch(movements[autoStep]){
-		case 'a':
-			SmartDashboard::PutBoolean("Done", Align(0));
-			if(Align(0)){
-				Reset();
-				autoStep++;
-			}
-			break;
-		
-		case 'm':
-			SmartDashboard::PutBoolean("Done", Move(setpoints[autoStep]));
-			if(Move(setpoints[autoStep])){
-				Reset();
-				autoStep++;
-			}
-			break;
+	if(autoStep < setpoints.size() && MoveTo(setpoints[autoStep],kAutoSpeed)){
+		autoStep++;
+		Reset();
+	}
+}
 
-		case 't':
-			SmartDashboard::PutBoolean("Done", Turn(setpoints[autoStep]));
-			if(Turn(setpoints[autoStep])){
-				Reset();
-				autoStep++;
-			}
-			break;
+bool Auto::MoveTo(vector<float> coordinate, float speed){
+
+	float x = coordinate[0];
+	float y = coordinate[1];
+
+	float targetR = sqrt(pow(x,2) + pow(y,2));
+	float targetTheta = atan(y / (x == 0 ? x+0.01 : x))*180/M_PI;
+
+	float angle = targetTheta - positionTheta;
+	float distance = targetR - positionR;
+
+	if(moveToTurning){
+		if(Turn(angle, speed)){
+			chasis.ResetEncoders();
+			moveToTurning = false;
+		} else {
+			return false;
+		};
+	} else {
+		return Move(distance, speed);
 	}
 
 }
-/*
 
-void Auto::AdjustDistance(float requiredDistance){
-	if(frontToTarget == 0 && !gotLimelightDistance){
+void Auto::DeterminePosition(){
+
+	positionTheta += chasis.ReadGyro();
+
+	positionR += chasis.GetEncoderAverage();
+}
+	/*
+
+	void Auto::AdjustDistance(float requiredDistance){
+		if(frontToTarget == 0 && !gotLimelightDistance){
 
 
-		float verticalAngleRadians = verticalAngle*M_PI/180;
+			float verticalAngleRadians = verticalAngle*M_PI/180;
 
-		frontToTarget = (kObjectiveHeight-kLimelightHeight)/tan(kLimelightAngle+verticalAngleRadians)-kLimelightToFront;
+			frontToTarget = (kObjectiveHeight-kLimelightHeight)/tan(kLimelightAngle+verticalAngleRadians)-kLimelightToFront;
 
-		if(frontToTarget != 0){
-			gotLimelightDistance = true;
+			if(frontToTarget != 0){
+				gotLimelightDistance = true;
+			}
 		}
+
+		SmartDashboard::PutNumber("Distancia a recorrer", frontToTarget - requiredDistance);
+
+		if(frontToTarget != 0 && gotLimelightDistance){
+			Move(frontToTarget - requiredDistance);
+		}
+
 	}
+	*/
+	bool Auto::Align(float setpoint = 0)
+	{
 
-	SmartDashboard::PutNumber("Distancia a recorrer", frontToTarget - requiredDistance);
+		limelightPID.SetSetpoint(0);
 
-	if(frontToTarget != 0 && gotLimelightDistance){
-		Move(frontToTarget - requiredDistance);
-	}
+		std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
 
-}
-*/
-bool Auto::Align(float setpoint = 0){
+		double outputTurn = limelightPID.Calculate(-table->GetNumber("tx", 0.0));
+		// double outputMove = limelightPID.Calculate(-table->GetNumber("ty", 0.0));
 
-	limelightPID.SetSetpoint(0);
+		chasis.Drive(clamp(outputTurn, -0.4, 0.4), 0);
 
-	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
-
-	double outputTurn = limelightPID.Calculate(-table->GetNumber("tx", 0.0));
-	//double outputMove = limelightPID.Calculate(-table->GetNumber("ty", 0.0));
-
- 	chasis.Drive(clamp(outputTurn, -0.4, 0.4), 0);
-
-	return limelightPID.AtSetpoint();
+		return limelightPID.AtSetpoint();
 }

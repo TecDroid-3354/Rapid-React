@@ -25,18 +25,7 @@ static const int shooterDeviceID = 5;
 
 //------------------------------Speeds----------------------------------
 
-constexpr float kPanelSpeed = 1;
-constexpr float kAutoSpeed = 0.7;
-constexpr float kAutoTurn = 0.7;
-constexpr float kAutoBalance = 0.7;
-constexpr float kShooterSpeed = 1;
-constexpr float kTowerSpeed = 1;
-constexpr float kIntakeSpeed = 1;
-constexpr float kClimberSpeed = 0.6;
-constexpr float kSliderSpeed = 1;
-constexpr float kElevatorSpeed = 1;
-constexpr float kMaxOutput = 0.4;
-constexpr float kMinOutput = -0.4;
+constexpr float kAutoSpeed = 0.4;
 
 //-----------------------------Constants---------------------------------
 

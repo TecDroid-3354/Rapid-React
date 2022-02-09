@@ -14,7 +14,7 @@ class Auto : public frc2::SubsystemBase
 public:
 
 	// Vector que contiene referencias a todas las funciones que se ejecutarán durante el periodo autónomo
-	//std::vector<bool(Auto::*)(float)> actionList;
+	//std::
 
 	// El autónomo se construye a partir de los subsistemas que va a controlar
 	explicit Auto(Drivetrain &);
@@ -26,16 +26,20 @@ public:
 	void Reset();
 
 	// Mover el chasis la distancia seleccionada
-	bool Move(float);
+	bool Move(float, float);
+
+	bool MoveTo(vector<float>, float);
 
 	// Girar el chasis hasta el ángulo seleccionado
-	bool Turn(float);
+	bool Turn(float, float);
 
 	// Quedar a una distancia específica del objetivo
 	void AdjustDistance(float);
 
 	// Alinear con el objetivo
 	bool Align(float);
+
+	void DeterminePosition();
 
 	void Run();
 
@@ -55,10 +59,7 @@ private:
 
 	PIDController limelightPID{kLimeP, kLimeI, kLimeD};
 
-	vector<double> setpoints = {100, 90, 50, 90, 100, 90, 0, 50};
-
-	vector<char> movements ={'m', 't', 'm', 't', 'm', 't', 'a', 'm'};
-
+	vector<vector<float>> setpoints = {{50,50}};
 	
 	int autoStep = 0;
 
@@ -69,4 +70,10 @@ private:
 
 	float frontToTarget = 0;
 	bool gotLimelightDistance = false;
+
+	float positionTheta = 0, positionR = 0;
+
+	bool moveToTurning = true;
+
+	double maxSpeed = 0.5;
 };
