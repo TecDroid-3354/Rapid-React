@@ -12,6 +12,8 @@
 #include "subsystems/Drivetrain.h"
 #include "subsystems/Auto.h"
 #include "subsystems/Shooter.h"
+#include "subsystems/Intake.h"
+#include "subsystems/Turret.h"
 
 using namespace frc2;
 using namespace frc;
@@ -45,6 +47,12 @@ private:
 
 	// Objeto del autónomo que recibe el chasis
 	Auto auton{chasis};
+
+	Turret turret;
+
+	Shooter shooter;
+
+	Intake intake;
 
 	/*Objeto de disparador*/
 	// Shooter shooter;
