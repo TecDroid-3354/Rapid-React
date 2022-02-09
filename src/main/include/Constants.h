@@ -40,6 +40,7 @@ constexpr int pEncoderTurretB = 3;
 constexpr float kAutoSpeed = 0.4;
 constexpr float kFeederSpeed = 1;
 constexpr float kIntakeSpeed = 1;
+constexpr float kTurretSpeed = 0.5;
 
 //-----------------------------Constants---------------------------------
 
