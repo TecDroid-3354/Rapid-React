@@ -69,18 +69,18 @@ void Shooter::ResetServos()
 {
 	mServoRight.Set(0);
 	mServoRight.Set(0);
-};
+}
 
 void Shooter::ResetMotors()
 {
 	mFeeder.RestoreFactoryDefaults();
 	mShooter.RestoreFactoryDefaults();
-};
+}
 
 void Shooter::ResetEncoder()
 {
 	encoder.Reset();
-};
+}
 
 void Shooter::Reset()
 {

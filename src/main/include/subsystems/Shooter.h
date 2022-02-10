@@ -7,7 +7,7 @@
 #include <frc/Encoder.h>
 #include <frc2/command/PIDSubsystem.h>
 #include <networktables/NetworkTable.h>
-#include <frc/PWM.h>
+#include <frc/Servo.h>
 
 using namespace frc;
 using namespace frc2;

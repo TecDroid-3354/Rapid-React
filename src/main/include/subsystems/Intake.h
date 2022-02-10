@@ -9,7 +9,6 @@
 
 using namespace frc;
 using namespace frc2;
-using namespace rev;
 
 class Intake : public SubsystemBase
 {

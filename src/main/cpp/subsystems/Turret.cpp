@@ -9,6 +9,7 @@
 #include "wpi/span.h"
 
 using namespace frc;
+using namespace std;
 
 Turret::Turret()
 {
@@ -38,7 +39,7 @@ bool Turret::Align()
 
 	alignPID.SetSetpoint(0);
 
-	double output = alignPID.Calculate(-table->GetNumber("tx", 0.0));
+	float output = alignPID.Calculate(-limelight->GetNumber("tx", 0.0));
 
 	motor.Set(clamp(output, -kTurretSpeed, kTurretSpeed));
 

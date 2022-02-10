@@ -131,9 +131,10 @@ bool Auto::MoveTo(vector<float> coordinate, float speed){
 		if(Turn(angle, speed)){
 			chasis.ResetEncoders();
 			moveToTurning = false;
+			return true;
 		} else {
 			return false;
-		};
+		}
 	} else {
 		return Move(distance, speed);
 	}
@@ -145,42 +146,4 @@ void Auto::DeterminePosition(){
 	positionTheta += chasis.ReadGyro();
 
 	positionR += chasis.GetEncoderAverage();
-}
-	/*
-
-	void Auto::AdjustDistance(float requiredDistance){
-		if(frontToTarget == 0 && !gotLimelightDistance){
-
-
-			float verticalAngleRadians = verticalAngle*M_PI/180;
-
-			frontToTarget = (kObjectiveHeight-kLimelightHeight)/tan(kLimelightAngle+verticalAngleRadians)-kLimelightToFront;
-
-			if(frontToTarget != 0){
-				gotLimelightDistance = true;
-			}
-		}
-
-		SmartDashboard::PutNumber("Distancia a recorrer", frontToTarget - requiredDistance);
-
-		if(frontToTarget != 0 && gotLimelightDistance){
-			Move(frontToTarget - requiredDistance);
-		}
-
-	}
-	*/
-
-bool Auto::Align(float setpoint = 0)
-{
-
-	limelightPID.SetSetpoint(0);
-
-	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
-
-	double outputTurn = limelightPID.Calculate(-table->GetNumber("tx", 0.0));
-	// double outputMove = limelightPID.Calculate(-table->GetNumber("ty", 0.0));
-
-	chasis.Drive(clamp(outputTurn, -0.4, 0.4), 0);
-
-	return limelightPID.AtSetpoint();
 }

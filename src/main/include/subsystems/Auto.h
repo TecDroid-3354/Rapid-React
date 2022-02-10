@@ -36,9 +36,6 @@ public:
 	// Quedar a una distancia específica del objetivo
 	void AdjustDistance(float);
 
-	// Alinear con el objetivo
-	bool Align(float);
-
 	void DeterminePosition();
 
 	void Run();
@@ -57,7 +54,7 @@ private:
 
 	vector<vector<float>> setpoints = {{50,50}};
 	
-	int autoStep = 0;
+	unsigned int autoStep = 0;
 
 	// Temporizador
 	frc::Timer timer;

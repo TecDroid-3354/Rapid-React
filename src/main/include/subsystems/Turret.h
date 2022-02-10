@@ -11,7 +11,6 @@
 
 using namespace frc;
 using namespace frc2;
-using namespace rev;
 
 // Clase para el disparador
 class Turret : public SubsystemBase
@@ -37,7 +36,7 @@ private:
 
 	PIDController anglePID{kTurretEncoderP, kTurretEncoderI, kTurretEncoderD};
 
-	PIDController alignPID{kTurretAlignP, kTurretAlign, kTurretAlign};
+	PIDController alignPID{kTurretAlignP, kTurretAlignI, kTurretAlignD};
 
 	// Control
 	XboxController control{0};

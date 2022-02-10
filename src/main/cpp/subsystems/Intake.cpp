@@ -6,11 +6,11 @@ using namespace frc;
 
 Intake::Intake(){
 
-};
+}
 
 void Intake::Periodic()
 {
-	Move(control.GetRightAxisX())
+	Move(control.GetRightX());
 }
 
 void Intake::Reset()

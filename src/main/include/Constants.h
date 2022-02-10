@@ -23,10 +23,10 @@ constexpr int feederDeviceID = 6;
 
 //----------------------------PWM Ports---------------------------------
 
-constexpr pIntake = 0;
-constexpr pTurret = 1;
-constexpr pServoRight = 2;
-constexpr pServoLeft = 3;
+constexpr int pIntake = 0;
+constexpr int pTurret = 1;
+constexpr int pServoRight = 2;
+constexpr int pServoLeft = 3;
 
 //------------------------------DIO Ports----------------------------------
 
@@ -60,6 +60,10 @@ constexpr double kTurnP = 0.1, kTurnI = 0, kTurnD = 0.01;
 constexpr double kLimeP = 0.1, kLimeI = 0, kLimeD = 0.001;
 
 constexpr double kShooterP = 0, kShooterI = 0, kShooterD = 0;
+
+constexpr double kTurretEncoderP = 0, kTurretEncoderI = 0, kTurretEncoderD = 0;
+
+constexpr double kTurretAlignP = 0, kTurretAlignI = 0, kTurretAlignD = 0;
 
 //---------------------------Control Map---------------------------------
 
