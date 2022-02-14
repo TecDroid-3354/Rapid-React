@@ -50,7 +50,6 @@ void Auto::Periodic()
 {
 
 	/*
-
 	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
 	horizontalAngle = table->GetNumber("tx",0.0);
 	verticalAngle = table->GetNumber("ty",0.0);
@@ -60,30 +59,37 @@ void Auto::Periodic()
 	SmartDashboard::PutNumber("Horizontal", horizontalAngle);
 	SmartDashboard::PutNumber("Vertical", verticalAngle);
 	SmartDashboard::PutNumber("Area", targetArea);
-	SmartDashboard::PutNumber("Skew", targetSkew);*/
+	SmartDashboard::PutNumber("Skew", targetSkew);
+	*/
+
+
+	SmartDashboard::PutNumber("Auto Step", autoStep);
+	SmartDashboard::PutBoolean("Turning", moveToTurning);
 }
 
 bool Auto::Move(float distance, float speed){
 	
+	SmartDashboard::PutNumber("Moving to", distance);
+
 	movePID.SetSetpoint(-distance);
 	
 	float output = movePID.Calculate(-chasis.GetEncoderAverage());
 
-	chasis.Drive(0,clamp(output,-speed,speed));
+	chasis.Drive(0, clamp(output,-speed,speed));
 
-	SmartDashboard::PutString("Auto Step", "Move");
 	return movePID.AtSetpoint();
 }
 
 
 bool Auto::Turn(float angle, float speed){
 
+	SmartDashboard::PutNumber("Turning To", angle);
+
 	turnPID.SetSetpoint(angle);
 	float output = turnPID.Calculate(chasis.ReadGyro());
 
 	chasis.Drive(clamp(output,-speed,speed),0);
 
-	SmartDashboard::PutString("Auto Step", "Turn");
 
 	return turnPID.AtSetpoint();
 }
@@ -105,15 +111,18 @@ void Auto::Reset()
 
 	limelightPID.Reset();
 
+	moveToTurning = true;
 	
 }
 
 void Auto::Run(){
 
 	if(autoStep < setpoints.size() && MoveTo(setpoints[autoStep],kAutoSpeed)){
-		autoStep++;
 		Reset();
+		autoStep++;
 	}
+	
+
 }
 
 bool Auto::MoveTo(vector<float> coordinate, float speed){
@@ -122,7 +131,7 @@ bool Auto::MoveTo(vector<float> coordinate, float speed){
 	float y = coordinate[1];
 
 	float targetR = sqrt(pow(x,2) + pow(y,2));
-	float targetTheta = atan(y / (x == 0 ? x+0.01 : x))*180/M_PI;
+	float targetTheta = atan(y / (x == 0 ? 0.01 : x))*180/M_PI;
 
 	float angle = targetTheta - positionTheta;
 	float distance = targetR - positionR;
@@ -131,12 +140,13 @@ bool Auto::MoveTo(vector<float> coordinate, float speed){
 		if(Turn(angle, speed)){
 			chasis.ResetEncoders();
 			moveToTurning = false;
-			return true;
 		} else {
 			return false;
 		}
 	} else {
-		return Move(distance, speed);
+		bool reached = Move(distance, speed);
+		SmartDashboard::PutBoolean("Reached", reached);
+		return reached;
 	}
 
 }
@@ -146,4 +156,13 @@ void Auto::DeterminePosition(){
 	positionTheta += chasis.ReadGyro();
 
 	positionR += chasis.GetEncoderAverage();
+}
+
+void Auto::Init(){
+
+	Reset();
+
+	autoStep = 0;
+	positionTheta = 0;
+	positionR = 0;
 }

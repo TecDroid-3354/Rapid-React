@@ -50,7 +50,7 @@ double Shooter::CalculateRPM()
 {
 	float angle = limelight->GetNumber("ty", 0) * M_PI / 180;
 
-	return CalculateDistance(angle);
+	return CalculateDistance(angle); //Aquí irá la función de rpm según distancia
 }
 
 double Shooter::CalculateDistance(float angle)

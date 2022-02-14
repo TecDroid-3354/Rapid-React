@@ -31,13 +31,16 @@ void Drivetrain::Periodic()
 	SmartDashboard::PutNumber("BackRight Motor", backRight.Get());
 
 	// ------------------------- Publicar distancia recorrida por cada encoder ----------------------
-	SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition() * kDistancePerRotation);
-	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition() * kDistancePerRotation);
-	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition() * kDistancePerRotation);
-	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition() * kDistancePerRotation);
+	SmartDashboard::PutNumber("Front Right Encoder", encoderFrontRight.GetPosition());
+	SmartDashboard::PutNumber("Front Left Encoder", encoderFrontLeft.GetPosition());
+	SmartDashboard::PutNumber("Back Right Encoder", encoderBackRight.GetPosition());
+	SmartDashboard::PutNumber("Back Left Encoder", encoderBackLeft.GetPosition());
 
 	// Publicar distancia promedio de todos los encoders
 	SmartDashboard::PutNumber("Encoder Average", GetEncoderAverage());
+
+	SmartDashboard::PutNumber("Gyro", ReadGyro());
+
 }
 
 // Manejar el robot según el control
@@ -69,10 +72,6 @@ void Drivetrain::SetSafetyEnabled(bool state)
 void Drivetrain::Reset()
 {
 	// ------------------------------ Resetear valores de los motores -------------------------
-	frontRight.RestoreFactoryDefaults();
-	backRight.RestoreFactoryDefaults();
-	frontLeft.RestoreFactoryDefaults();
-	backRight.RestoreFactoryDefaults();
 
 	ResetGyro();
 	ResetEncoders();
@@ -92,7 +91,7 @@ void Drivetrain::ResetEncoders(){
 float Drivetrain::GetEncoderAverage()
 {
 	// Los valores de los encoders derecho están negativos porque apuntan al lado contrario
-	return ((encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition()) - (encoderBackRight.GetPosition() + encoderFrontRight.GetPosition())) / 4;
+	return (encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition() - (encoderBackRight.GetPosition() + encoderFrontRight.GetPosition()) )/4;
 }
 
 // Leer el giroscopio

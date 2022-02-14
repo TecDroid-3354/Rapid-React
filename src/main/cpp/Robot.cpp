@@ -16,6 +16,7 @@ using namespace frc;
 void Robot::RobotInit()
 {
 
+	
 	// Obtener cámara 1
 	// cs::UsbCamera cam = frc::CameraServer::GetInstance()->StartAutomaticCapture(0);
 
@@ -59,13 +60,13 @@ void Robot::AutonomousInit()
 {
 
 	// Resetear el paso
-	robot.ResetAuto();
+	robot.AutonomousInit();
 }
 
 // Función del autónomo
 void Robot::AutonomousPeriodic()
 {
-	robot.RunAuto();
+	robot.AutonomousPeriodic();
 }
 
 // Inicializar teleoperado

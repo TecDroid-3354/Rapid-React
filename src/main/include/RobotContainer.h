@@ -33,10 +33,10 @@ public:
 	void Reset();
 
 	// Ejecuta el autónomo
-	void RunAuto();
+	void AutonomousPeriodic();
 
 	// Resetea el autónomo
-	void ResetAuto();
+	void AutonomousInit();
 
 	/*Temporizador*/
 	frc::Timer timer;

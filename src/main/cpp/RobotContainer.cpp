@@ -38,14 +38,14 @@ void RobotContainer::Reset()
 	// intake.Reset();
 }
 
-void RobotContainer::RunAuto()
+void RobotContainer::AutonomousPeriodic()
 {
 	// auton.Move(50);
 	//auton.Turn(90);
 	auton.Run();
 }
 
-void RobotContainer::ResetAuto()
+void RobotContainer::AutonomousInit()
 {
-	auton.Reset();
+	auton.Init();
 }

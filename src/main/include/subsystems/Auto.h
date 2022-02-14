@@ -14,7 +14,7 @@ class Auto : public frc2::SubsystemBase
 public:
 
 	// Vector que contiene referencias a todas las funciones que se ejecutarán durante el periodo autónomo
-	//std::
+	// std::
 
 	// El autónomo se construye a partir de los subsistemas que va a controlar
 	explicit Auto(Drivetrain &);
@@ -40,11 +40,11 @@ public:
 
 	void Run();
 
+	void Init();
+
 private:
 	// Chasis
 	Drivetrain &chasis;
-
-
 
 	PIDController movePID{kMoveP,kMoveI,kMoveD};
 
@@ -52,7 +52,7 @@ private:
 
 	PIDController limelightPID{kLimeP, kLimeI, kLimeD};
 
-	vector<vector<float>> setpoints = {{50,50}};
+	vector<vector<float>> setpoints = {{-100,100},{100,100}};
 	
 	unsigned int autoStep = 0;
 
