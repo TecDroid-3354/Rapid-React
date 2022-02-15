@@ -50,10 +50,12 @@ constexpr double kI = 1e-4;
 constexpr double kD = 1;
 constexpr double kIz = 0;
 constexpr double kFF = 0;
+constexpr double kUnitsAxisWidth = 60;
 
 //-----------------------------PID Constants---------------------------------
 
-constexpr double kMoveP = 0.1, kMoveI = 0, kMoveD = 0;
+constexpr double kMoveP = 0.1,
+				 kMoveI = 0, kMoveD = 0;
 
 constexpr double kTurnP = 0.1, kTurnI = 0, kTurnD = 0.01;
 

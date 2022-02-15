@@ -1,11 +1,11 @@
-#include <frc/smartdashboard/smartdashboard.h>
 #include "Constants.h"
-#include <subsystems/Auto.h>
 #include "networktables/NetworkTable.h"
-#include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableEntry.h"
+#include "networktables/NetworkTableInstance.h"
 #include "networktables/NetworkTableValue.h"
 #include "wpi/span.h"
+#include <frc/smartdashboard/smartdashboard.h>
+#include <subsystems/Auto.h>
 #include <vector>
 
 using namespace frc;
@@ -43,12 +43,14 @@ void Auto::Run(){
 
 Auto::Auto(Drivetrain &ch) : chasis{ch}
 { // El :chasis{ch}  es como poner chasis = ch adentro de la función
-
 }
 
 void Auto::Periodic()
 {
 
+	DeterminePosition();
+	SmartDashboard::PutNumber("X", currentX);
+	SmartDashboard::PutNumber("Y", currentY);
 	/*
 	std::shared_ptr<nt::NetworkTable> table = nt::NetworkTableInstance::GetDefault().GetTable("limelight");
 	horizontalAngle = table->GetNumber("tx",0.0);
@@ -62,34 +64,33 @@ void Auto::Periodic()
 	SmartDashboard::PutNumber("Skew", targetSkew);
 	*/
 
-
 	SmartDashboard::PutNumber("Auto Step", autoStep);
 	SmartDashboard::PutBoolean("Turning", moveToTurning);
 }
 
-bool Auto::Move(float distance, float speed){
-	
+bool Auto::Move(float distance, float speed)
+{
+
 	SmartDashboard::PutNumber("Moving to", distance);
 
 	movePID.SetSetpoint(-distance);
-	
+
 	float output = movePID.Calculate(-chasis.GetEncoderAverage());
 
-	chasis.Drive(0, clamp(output,-speed,speed));
+	chasis.Drive(0, clamp(output, -speed, speed));
 
 	return movePID.AtSetpoint();
 }
 
-
-bool Auto::Turn(float angle, float speed){
+bool Auto::Turn(float angle, float speed)
+{
 
 	SmartDashboard::PutNumber("Turning To", angle);
 
 	turnPID.SetSetpoint(angle);
 	float output = turnPID.Calculate(chasis.ReadGyro());
 
-	chasis.Drive(clamp(output,-speed,speed),0);
-
+	chasis.Drive(clamp(output, -speed, speed), 0);
 
 	return turnPID.AtSetpoint();
 }
@@ -104,7 +105,7 @@ void Auto::Reset()
 	chasis.Reset();
 
 	movePID.Reset();
-	movePID.SetTolerance(0.1),
+	movePID.SetTolerance(0.1);
 
 	turnPID.Reset();
 	turnPID.SetTolerance(0.1);
@@ -112,53 +113,73 @@ void Auto::Reset()
 	limelightPID.Reset();
 
 	moveToTurning = true;
-	
 }
 
-void Auto::Run(){
+void Auto::Run()
+{
 
-	if(autoStep < setpoints.size() && MoveTo(setpoints[autoStep],kAutoSpeed)){
+	if (autoStep < setpoints.size() && MoveTo(setpoints[autoStep], kAutoSpeed))
+	{
 		Reset();
 		autoStep++;
 	}
-	
-
 }
 
-bool Auto::MoveTo(vector<float> coordinate, float speed){
+bool Auto::MoveTo(vector<float> coordinate, float speed)
+{
 
-	float x = coordinate[0];
-	float y = coordinate[1];
+	float x = coordinate[0] - currentX;
+	float y = coordinate[1] - currentY;
 
-	float targetR = sqrt(pow(x,2) + pow(y,2));
-	float targetTheta = atan(y / (x == 0 ? 0.01 : x))*180/M_PI;
+	float distance = sqrt(pow(x, 2) + pow(y, 2));
+	float angle = atan(y / (x == 0 ? 0.01 : x)) * 180 / M_PI;
 
-	float angle = targetTheta - positionTheta;
-	float distance = targetR - positionR;
-
-	if(moveToTurning){
-		if(Turn(angle, speed)){
-			chasis.ResetEncoders();
+	if (moveToTurning)
+	{
+		if (Turn(angle, speed))
+		{
 			moveToTurning = false;
-		} else {
+		}
+		else
+		{
 			return false;
 		}
-	} else {
-		bool reached = Move(distance, speed);
-		SmartDashboard::PutBoolean("Reached", reached);
-		return reached;
+	}
+	else
+	{
+		return Move(distance, speed);
+	}
+}
+
+void Auto::DeterminePosition()
+{
+
+	float rightDelta = chasis.ReadRightEncoders() - absoluteRightDisplacement;
+	float leftDelta = chasis.ReadLeftEncoders() - absoluteLeftDisplacement;
+	float heading = chasis.ReadGyro();
+
+	float new_x, new_y;
+
+	if (fabs(leftDelta - rightDelta) < 1.0e-6)
+	{ // basically going straight
+		new_x = currentX + leftDelta * cos(heading);
+		new_y = currentY + rightDelta * sin(heading);
+	}
+	else
+	{
+		float R = kUnitsAxisWidth * (leftDelta + rightDelta) / (2 * (rightDelta - leftDelta));
+		float wd = (rightDelta - leftDelta) / kUnitsAxisWidth;
+
+		new_x = currentX + R * sin(wd + heading) - R * sin(heading);
+		new_y = currentY - R * cos(wd + heading) + R * cos(heading);
 	}
 
+	absoluteRightDisplacement = chasis.ReadRightEncoders();
+	absoluteLeftDisplacement = chasis.ReadLeftEncoders();
 }
 
-void Auto::DeterminePosition(){
-
-	positionTheta += chasis.ReadGyro();
-
-	positionR += chasis.GetEncoderAverage();
-}
-
-void Auto::Init(){
+void Auto::Init()
+{
 
 	Reset();
 
