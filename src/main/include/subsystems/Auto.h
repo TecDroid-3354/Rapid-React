@@ -1,7 +1,7 @@
 #pragma once
 
-#include "subsystems/Drivetrain.h"
 #include "Constants.h"
+#include "subsystems/Drivetrain.h"
 #include <frc2/command/PIDSubsystem.h>
 #include <vector>
 
@@ -12,7 +12,6 @@ using namespace std;
 class Auto : public frc2::SubsystemBase
 {
 public:
-
 	// Vector que contiene referencias a todas las funciones que se ejecutarán durante el periodo autónomo
 	// std::
 
@@ -42,18 +41,20 @@ public:
 
 	void Init();
 
+	float DetermineAngleToTurn();
+
 private:
 	// Chasis
 	Drivetrain &chasis;
 
-	PIDController movePID{kMoveP,kMoveI,kMoveD};
+	PIDController movePID{kMoveP, kMoveI, kMoveD};
 
-	PIDController turnPID{kTurnP,kTurnI,kTurnD};
+	PIDController turnPID{kTurnP, kTurnI, kTurnD};
 
 	PIDController limelightPID{kLimeP, kLimeI, kLimeD};
 
-	vector<vector<float>> setpoints = {{-100,100},{100,100}};
-	
+	vector<vector<float>> setpoints = {{-100, 100}, {100, 100}};
+
 	unsigned int autoStep = 0;
 
 	// Temporizador
@@ -62,6 +63,7 @@ private:
 	double horizontalAngle, verticalAngle, targetArea, targetSkew;
 
 	float frontToTarget = 0;
+
 	bool gotLimelightDistance = false;
 
 	float positionTheta = 0, positionR = 0;
@@ -69,4 +71,8 @@ private:
 	bool moveToTurning = true;
 
 	double maxSpeed = 0.5;
+
+	double currentX, currentY;
+
+	double absoluteRightDisplacement, absoluteLeftDisplacement;
 };
