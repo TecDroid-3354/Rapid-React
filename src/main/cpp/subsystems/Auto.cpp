@@ -62,10 +62,12 @@ void Auto::Periodic()
 	SmartDashboard::PutNumber("Skew", targetSkew);
 	*/
 
+	DeterminePosition();
 
-	SmartDashboard::PutNumber("Auto Step", autoStep);
-	SmartDashboard::PutBoolean("Turning", moveToTurning);
+
 }
+
+
 
 bool Auto::Move(float distance, float speed){
 	
@@ -86,7 +88,7 @@ bool Auto::Turn(float angle, float speed){
 	SmartDashboard::PutNumber("Turning To", angle);
 
 	turnPID.SetSetpoint(angle);
-	float output = turnPID.Calculate(chasis.ReadGyro());
+	float output = turnPID.Calculate(chasis.ReadGyroDeg());
 
 	chasis.Drive(clamp(output,-speed,speed),0);
 
@@ -98,8 +100,7 @@ bool Auto::Turn(float angle, float speed){
 void Auto::Reset()
 {
 
-	// Resetear motores y sensores
-	DeterminePosition();
+
 
 	chasis.Reset();
 
@@ -112,50 +113,77 @@ void Auto::Reset()
 	limelightPID.Reset();
 
 	moveToTurning = true;
-	
+
+	displacementRight = 0;
+	displacementLeft = 0;
+	currentX = 0;
+	currentY = 0;
+	heading = 0;
+	// Resetear motores y sensores
+	DeterminePosition();
 }
+
 
 void Auto::Run(){
 
-	if(autoStep < setpoints.size() && MoveTo(setpoints[autoStep],kAutoSpeed)){
-		Reset();
-		autoStep++;
-	}
-	
 
 }
 
 bool Auto::MoveTo(vector<float> coordinate, float speed){
 
-	float x = coordinate[0];
-	float y = coordinate[1];
 
-	float targetR = sqrt(pow(x,2) + pow(y,2));
-	float targetTheta = atan(y / (x == 0 ? 0.01 : x))*180/M_PI;
+	//Calcular el ángulo que debe girar según la coordenada actual, la coordenada meta, y la dirección a la que está viendo
+	//Girar el ángulo
+	//Determinar si ya llegó al ángulo
+	//Resetear encoders
+	//Determinar distancia según coordenada actual y coordenada meta
+	//Avanzar distancia
+	//Determinar si ya llegó a la coordenada
+	//Asignar la coordenada meta como la nueva coordenada actual
 
-	float angle = targetTheta - positionTheta;
-	float distance = targetR - positionR;
-
-	if(moveToTurning){
-		if(Turn(angle, speed)){
-			chasis.ResetEncoders();
-			moveToTurning = false;
-		} else {
-			return false;
-		}
-	} else {
-		bool reached = Move(distance, speed);
-		SmartDashboard::PutBoolean("Reached", reached);
-		return reached;
-	}
 
 }
 
 void Auto::DeterminePosition(){
 
-	positionTheta += chasis.ReadGyro();
+	float
+		leftDelta = chasis.ReadLeftEncoders() - displacementLeft, // Esto tiene que cambia
+		rightDelta = chasis.ReadRightEncoders() - displacementRight;
 
-	positionR += chasis.GetEncoderAverage();
+	SmartDashboard::PutNumber("Heading", heading);
+
+	SmartDashboard::PutNumber("leftDelta", leftDelta);
+	SmartDashboard::PutNumber("rightDelta", rightDelta);
+
+	SmartDashboard::PutNumber("Disp R", displacementRight);
+	SmartDashboard::PutNumber("Disp L", displacementLeft);
+
+	
+	if (fabs(chasis.ReadRightEncoders() - chasis.ReadLeftEncoders()) < 1.0e-6) //Si ambas ruedas avanzaron (casi) exactamente lo mismo
+	{
+		currentY += leftDelta * cos(heading);
+		currentX += rightDelta * sin(heading);
+	}
+	else
+	{
+		float difference = (rightDelta - leftDelta);
+		float r = kUnitsAxisWidth * (leftDelta + rightDelta) / (2 * difference != 0 ? difference : 1e-9);
+		float wd = difference / kUnitsAxisWidth;
+
+		currentY += r * sin(wd + heading) - r * sin(heading);
+		currentX += -r * cos(wd + heading) + r * cos(heading);
+
+		heading = fmod(heading + wd, 360);
+	}
+
+	SmartDashboard::PutNumber("X", currentX);
+	SmartDashboard::PutNumber("Y", currentY);
+
+	displacementRight = chasis.ReadRightEncoders();
+	displacementLeft = chasis.ReadLeftEncoders();
+	displacementAngle = chasis.ReadGyroRad();
+
+
 }
 
 void Auto::Init(){
@@ -166,3 +194,4 @@ void Auto::Init(){
 	positionTheta = 0;
 	positionR = 0;
 }
+

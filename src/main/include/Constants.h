@@ -50,6 +50,7 @@ constexpr double kI = 1e-4;
 constexpr double kD = 1;
 constexpr double kIz = 0;
 constexpr double kFF = 0;
+constexpr double kUnitsAxisWidth = 70; // Distancia entre ruedas
 
 //-----------------------------PID Constants---------------------------------
 

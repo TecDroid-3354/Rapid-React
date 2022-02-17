@@ -39,7 +39,7 @@ void Drivetrain::Periodic()
 	// Publicar distancia promedio de todos los encoders
 	SmartDashboard::PutNumber("Encoder Average", GetEncoderAverage());
 
-	SmartDashboard::PutNumber("Gyro", ReadGyro());
+	SmartDashboard::PutNumber("Gyro", ReadGyroDeg());
 
 }
 
@@ -78,7 +78,8 @@ void Drivetrain::Reset()
 }
 
 void Drivetrain::ResetGyro(){
-	gyro.Reset();
+	gyro.Calibrate();
+	//gyro.Reset();
 }
 
 void Drivetrain::ResetEncoders(){
@@ -94,10 +95,29 @@ float Drivetrain::GetEncoderAverage()
 	return (encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition() - (encoderBackRight.GetPosition() + encoderFrontRight.GetPosition()) )/4;
 }
 
+
+float Drivetrain::ReadRightEncoders(){
+
+return -((encoderBackRight.GetPosition() + encoderFrontRight.GetPosition()) )/2;
+
+}
+
+float Drivetrain::ReadLeftEncoders(){
+
+	return (encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition()) / 2;
+}
+
 // Leer el giroscopio
-float Drivetrain::ReadGyro()
+float Drivetrain::ReadGyroDeg()
 {
 
 	// Se le agrega .value() porque GetAngle() no regresa un número sino una variable tipo angle, .value() obtiene el valor numérico
 	return gyro.GetAngle().value();
+}
+
+float Drivetrain::ReadGyroRad()
+{
+
+	// Se le agrega .value() porque GetAngle() no regresa un número sino una variable tipo angle, .value() obtiene el valor numérico
+	return gyro.GetAngle().value()*M_PI/180;
 }

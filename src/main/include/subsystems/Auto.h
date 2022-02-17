@@ -42,6 +42,8 @@ public:
 
 	void Init();
 
+	float DetermineAngleToTurn();
+
 private:
 	// Chasis
 	Drivetrain &chasis;
@@ -62,6 +64,7 @@ private:
 	double horizontalAngle, verticalAngle, targetArea, targetSkew;
 
 	float frontToTarget = 0;
+
 	bool gotLimelightDistance = false;
 
 	float positionTheta = 0, positionR = 0;
@@ -69,4 +72,15 @@ private:
 	bool moveToTurning = true;
 
 	double maxSpeed = 0.5;
+
+	//variables para obtener nuevo águlo
+	float centerx = 35;
+
+	float centery = 29;
+
+	float currentX, currentY;
+
+	float displacementRight = 0, displacementLeft = 0, displacementAngle = 0, displacementAverage = 0;
+
+	float heading = 0;
 };

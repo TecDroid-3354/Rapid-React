@@ -45,7 +45,13 @@ public:
 	float GetEncoderAverage();
 
 	// Leer el valor del giroscopio
-	float ReadGyro();
+	float ReadGyroDeg();
+
+	float ReadGyroRad();
+
+	float ReadRightEncoders();
+
+	float ReadLeftEncoders();
 
 private:
 
