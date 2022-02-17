@@ -1,14 +1,13 @@
 
 #pragma once
 
-
 #include "Constants.h"
-#include "frc/drive/DifferentialDrive.h"
 #include "frc/XboxController.h"
+#include "frc/drive/DifferentialDrive.h"
+#include "frc2/command/SubsystemBase.h"
+#include <frc/ADIS16448_IMU.h>
 #include <frc/motorcontrol/MotorControllerGroup.h>
 #include <rev/CANSparkMax.h>
-#include <frc/ADIS16448_IMU.h>
-#include "frc2/command/SubsystemBase.h"
 
 using namespace frc2;
 using namespace rev;
@@ -44,6 +43,10 @@ public:
 	// Obtener el promedio de los cuatro encoders
 	float GetEncoderAverage();
 
+	float ReadRightEncoders();
+
+	float ReadLeftEncoders();
+
 	// Leer el valor del giroscopio
 	float ReadGyroDeg();
 
@@ -54,7 +57,6 @@ public:
 	float ReadLeftEncoders();
 
 private:
-
 	// -------------------------------------- Motores ----------------------------------------------------
 	// Motor frente derecho
 	CANSparkMax frontRight{frontRightDeviceID, CANSparkMax::MotorType::kBrushless};

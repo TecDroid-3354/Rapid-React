@@ -6,8 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Drivetrain.h"
-#include <frc/smartdashboard/smartdashboard.h>
 #include "Constants.h"
+#include <frc/smartdashboard/smartdashboard.h>
 
 using namespace frc;
 using namespace std;
@@ -39,8 +39,7 @@ void Drivetrain::Periodic()
 	// Publicar distancia promedio de todos los encoders
 	SmartDashboard::PutNumber("Encoder Average", GetEncoderAverage());
 
-	SmartDashboard::PutNumber("Gyro", ReadGyroDeg());
-
+	SmartDashboard::PutNumber("Gyro", ReadGyro());
 }
 
 // Manejar el robot según el control
@@ -77,12 +76,13 @@ void Drivetrain::Reset()
 	ResetEncoders();
 }
 
-void Drivetrain::ResetGyro(){
-	gyro.Calibrate();
-	//gyro.Reset();
+void Drivetrain::ResetGyro()
+{
+	gyro.Reset();
 }
 
-void Drivetrain::ResetEncoders(){
+void Drivetrain::ResetEncoders()
+{
 	encoderFrontLeft.SetPosition(0);
 	encoderBackLeft.SetPosition(0);
 	encoderFrontRight.SetPosition(0);
@@ -92,7 +92,7 @@ void Drivetrain::ResetEncoders(){
 float Drivetrain::GetEncoderAverage()
 {
 	// Los valores de los encoders derecho están negativos porque apuntan al lado contrario
-	return (encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition() - (encoderBackRight.GetPosition() + encoderFrontRight.GetPosition()) )/4;
+	return (ReadRightEncoders() + ReadLeftEncoders()) / 2
 }
 
 
@@ -115,9 +115,14 @@ float Drivetrain::ReadGyroDeg()
 	return gyro.GetAngle().value();
 }
 
-float Drivetrain::ReadGyroRad()
+float Drivetrain::ReadRightEncoders()
 {
 
-	// Se le agrega .value() porque GetAngle() no regresa un número sino una variable tipo angle, .value() obtiene el valor numérico
-	return gyro.GetAngle().value()*M_PI/180;
+	return -(encoderFrontRight.GetPosition() + encoderBackRight.GetPosition()) / 2;
+}
+
+float Drivetrain::ReadLeftEncoders()
+{
+
+	return (encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition()) / 2;
 }
