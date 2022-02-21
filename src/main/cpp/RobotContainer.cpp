@@ -27,21 +27,23 @@ void RobotContainer::Drive()
 	// Manejar el robot según el control
 	chasis.Drive();
 
-	// Mover la torre según el control
-	// shooter.Move();
+	
+	//intake.Move(control.GetRightX());
 }
 
 void RobotContainer::Reset()
 {
 	chasis.Reset();
-	// shooter.Reset();
-	// intake.Reset();
+	shooter.Reset();
+	intake.Reset();
+	auton.Reset();
 }
 
 void RobotContainer::AutonomousPeriodic()
 {
-	// auton.Move(50);
-	//auton.Turn(90);
+
+	//auton.Move(50, kAutoSpeed);
+	//auton.Turn(90, kAutoSpeed);
 	auton.Run();
 }
 
@@ -49,4 +51,3 @@ void RobotContainer::AutonomousInit()
 {
 	auton.Init();
 }
-

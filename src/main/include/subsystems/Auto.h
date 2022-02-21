@@ -27,7 +27,7 @@ public:
 	// Mover el chasis la distancia seleccionada
 	bool Move(float, float);
 
-	bool MoveTo(vector<float>, float);
+	bool MoveTo(std::vector<float>, float);
 
 	// Girar el chasis hasta el ángulo seleccionado
 	bool Turn(float, float);
@@ -41,7 +41,7 @@ public:
 
 	void Init();
 
-	float DetermineAngleToTurn();
+	float GetAbsoluteAngle(float, float);
 
 private:
 	// Chasis
@@ -53,7 +53,7 @@ private:
 
 	PIDController limelightPID{kLimeP, kLimeI, kLimeD};
 
-	vector<vector<float>> setpoints = {{-100, 100}, {100, 100}};
+	std::vector<std::vector<float>> setpoints = {{100, 100}, {100, -100}};
 
 	unsigned int autoStep = 0;
 
@@ -66,13 +66,9 @@ private:
 
 	bool gotLimelightDistance = false;
 
-	float positionTheta = 0, positionR = 0;
-
-	bool moveToTurning = true;
+	bool isTurning = true;
 
 	double maxSpeed = 0.5;
 
-	double currentX, currentY;
-
-	double absoluteRightDisplacement, absoluteLeftDisplacement;
+	double currentX, currentY, currentAngle = 0;
 };

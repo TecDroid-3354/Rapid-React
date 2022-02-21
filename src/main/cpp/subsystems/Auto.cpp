@@ -65,13 +65,14 @@ void Auto::Periodic()
 	*/
 
 	SmartDashboard::PutNumber("Auto Step", autoStep);
-	SmartDashboard::PutBoolean("Turning", moveToTurning);
+	SmartDashboard::PutBoolean("Turning", isTurning);
 }
 
 bool Auto::Move(float distance, float speed)
 {
 
 	SmartDashboard::PutNumber("Moving to", distance);
+
 
 	movePID.SetSetpoint(-distance);
 
@@ -92,6 +93,7 @@ bool Auto::Turn(float angle, float speed)
 
 	chasis.Drive(clamp(output, -speed, speed), 0);
 
+	SmartDashboard::PutNumber("Angle Setpoint", turnPID.AtSetpoint());
 	return turnPID.AtSetpoint();
 }
 
@@ -99,19 +101,15 @@ bool Auto::Turn(float angle, float speed)
 void Auto::Reset()
 {
 
-
-
 	chasis.Reset();
 
 	movePID.Reset();
-	movePID.SetTolerance(0.1);
+	movePID.SetTolerance(1);
 
 	turnPID.Reset();
-	turnPID.SetTolerance(0.1);
+	turnPID.SetTolerance(1);
 
 	limelightPID.Reset();
-
-	moveToTurning = true;
 }
 
 void Auto::Run()
@@ -119,7 +117,6 @@ void Auto::Run()
 
 	if (autoStep < setpoints.size() && MoveTo(setpoints[autoStep], kAutoSpeed))
 	{
-		Reset();
 		autoStep++;
 	}
 }
@@ -131,40 +128,52 @@ bool Auto::MoveTo(vector<float> coordinate, float speed)
 	float x = coordinate[0] - currentX;
 	float y = coordinate[1] - currentY;
 
-	bool isTurning = true;
-	bool arrived = false;
-
-	float angle = atan(y / (x == 0 ? 0.01 : x)) * 180 / M_PI;
+	SmartDashboard::PutNumber("Absolute Angle", GetAbsoluteAngle(x, y));
+	float angle = currentAngle - GetAbsoluteAngle(x, y);
 	float distance = sqrt(pow(x, 2) + pow(y, 2));
 
-	if(arrived == false)
+	if (isTurning)
 	{
-		if (isTurning)
-		{
-			if (Turn(angle, speed))
-			{
-				moveToTurning = false;
-			}
-			else
-			{
-				return false;
-			}
-		}
-			
-		else
-		{
-			chasis.ResetEncoders();
-			return Move(distance, speed);
 
-			arrived = true;
+
+		if(Turn(angle, speed)){
+			chasis.ResetEncoders();
+			isTurning = false;
 		}
+
+		return false;
+	}
+		
+	else
+	{	
+		
+		bool finished = Move(distance, speed);
+
+		if(finished) {
+			currentX = coordinate[0];
+			currentY = coordinate[1];
+			currentAngle = chasis.ReadGyroDeg();
+			isTurning = true;
+		}
+
+		return finished;
 	}
 
 
 }
 
 
+float Auto::GetAbsoluteAngle(float x, float y){
 
+	float relAngle = M_PI_2 - atan(y / (x == 0 ? 0.01 : x));
+	if(x < 0){
+		relAngle += M_PI; 
+	} else if (y < 0){
+		relAngle += M_2_PI;
+	}
+
+	return  (relAngle) * 180 / M_PI ;
+}
 
 
 
@@ -209,9 +218,11 @@ void Auto::Init()
 	Reset();
 
 	autoStep = 0;
-	positionTheta = 0;
-	positionR = 0;
-	float target_coordinatex = 0;
-	float target_coordinatey = 0;
+
+	currentY = currentX = 0;
+
+	currentAngle = 0;
+
+	isTurning = true;
 }
 

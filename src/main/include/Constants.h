@@ -20,6 +20,7 @@ constexpr int backRightDeviceID = 3;
 constexpr int backLeftDeviceID = 4;
 constexpr int shooterDeviceID = 5;
 constexpr int feederDeviceID = 6;
+constexpr int elevatorDeviceID = 7;
 
 //----------------------------PWM Ports---------------------------------
 

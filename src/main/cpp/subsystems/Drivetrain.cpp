@@ -46,7 +46,7 @@ void Drivetrain::Periodic()
 void Drivetrain::Drive()
 {
 	// El eje X determina el giro
-	float x = control.GetRawAxis(cLeftAxisX);
+	float x = control.GetRawAxis(cRightAxisX);
 
 	// El eje Y determina el avance
 	float y = control.GetRawAxis(cLeftAxisY);

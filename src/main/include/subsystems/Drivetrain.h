@@ -51,7 +51,6 @@ public:
 	// Leer el valor del giroscopio
 	float ReadGyroDeg();
 
-	float ReadGyroRad();
 
 private:
 	// -------------------------------------- Motores ----------------------------------------------------

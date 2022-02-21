@@ -54,11 +54,8 @@ private:
 
 	Intake intake;
 
-	/*Objeto de disparador*/
-	// Shooter shooter;
+	XboxController control{0};
 
-	/*Objeto de torre*/
-	// Intake intake;
 
 	/*Función para configurar las acciones relacionadas a cada botón*/
 	void ConfigureButtonBindings();
