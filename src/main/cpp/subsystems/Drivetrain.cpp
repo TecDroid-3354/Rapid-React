@@ -39,7 +39,7 @@ void Drivetrain::Periodic()
 	// Publicar distancia promedio de todos los encoders
 	SmartDashboard::PutNumber("Encoder Average", GetEncoderAverage());
 
-	SmartDashboard::PutNumber("Gyro", ReadGyro());
+	SmartDashboard::PutNumber("Gyro", ReadGyroDeg());
 }
 
 // Manejar el robot según el control
@@ -92,7 +92,7 @@ void Drivetrain::ResetEncoders()
 float Drivetrain::GetEncoderAverage()
 {
 	// Los valores de los encoders derecho están negativos porque apuntan al lado contrario
-	return (ReadRightEncoders() + ReadLeftEncoders()) / 2
+	return (ReadRightEncoders() + ReadLeftEncoders()) / 2;
 }
 
 
@@ -115,14 +115,3 @@ float Drivetrain::ReadGyroDeg()
 	return gyro.GetAngle().value();
 }
 
-float Drivetrain::ReadRightEncoders()
-{
-
-	return -(encoderFrontRight.GetPosition() + encoderBackRight.GetPosition()) / 2;
-}
-
-float Drivetrain::ReadLeftEncoders()
-{
-
-	return (encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition()) / 2;
-}

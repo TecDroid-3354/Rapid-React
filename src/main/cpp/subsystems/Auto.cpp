@@ -48,7 +48,7 @@ Auto::Auto(Drivetrain &ch) : chasis{ch}
 void Auto::Periodic()
 {
 
-	DeterminePosition();
+	//DeterminePosition();
 	SmartDashboard::PutNumber("X", currentX);
 	SmartDashboard::PutNumber("Y", currentY);
 	/*
@@ -127,35 +127,59 @@ void Auto::Run()
 bool Auto::MoveTo(vector<float> coordinate, float speed)
 {
 
+	
 	float x = coordinate[0] - currentX;
 	float y = coordinate[1] - currentY;
 
-	float distance = sqrt(pow(x, 2) + pow(y, 2));
-	float angle = atan(y / (x == 0 ? 0.01 : x)) * 180 / M_PI;
+	bool isTurning = true;
+	bool arrived = false;
 
-	if (moveToTurning)
+	float angle = atan(y / (x == 0 ? 0.01 : x)) * 180 / M_PI;
+	float distance = sqrt(pow(x, 2) + pow(y, 2));
+
+	if(arrived == false)
 	{
-		if (Turn(angle, speed))
+		if (isTurning)
 		{
-			moveToTurning = false;
+			if (Turn(angle, speed))
+			{
+				moveToTurning = false;
+			}
+			else
+			{
+				return false;
+			}
 		}
+			
 		else
 		{
-			return false;
+			chasis.ResetEncoders();
+			return Move(distance, speed);
+
+			arrived = true;
 		}
 	}
-	else
-	{
-		return Move(distance, speed);
-	}
+
+
 }
 
+
+
+
+
+
+	
+
+	
+	
+
+/*
 void Auto::DeterminePosition()
 {
 
 	float rightDelta = chasis.ReadRightEncoders() - absoluteRightDisplacement;
 	float leftDelta = chasis.ReadLeftEncoders() - absoluteLeftDisplacement;
-	float heading = chasis.ReadGyro();
+	float heading = chasis.ReadGyroDeg();
 
 	float new_x, new_y;
 
@@ -176,6 +200,8 @@ void Auto::DeterminePosition()
 	absoluteRightDisplacement = chasis.ReadRightEncoders();
 	absoluteLeftDisplacement = chasis.ReadLeftEncoders();
 }
+*/
+
 
 void Auto::Init()
 {
@@ -185,5 +211,7 @@ void Auto::Init()
 	autoStep = 0;
 	positionTheta = 0;
 	positionR = 0;
+	float target_coordinatex = 0;
+	float target_coordinatey = 0;
 }
 

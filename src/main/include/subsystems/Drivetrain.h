@@ -39,6 +39,7 @@ public:
 
 	// Activar/Desactivar seguridad
 	void SetSafetyEnabled(bool);
+	
 
 	// Obtener el promedio de los cuatro encoders
 	float GetEncoderAverage();
@@ -51,10 +52,6 @@ public:
 	float ReadGyroDeg();
 
 	float ReadGyroRad();
-
-	float ReadRightEncoders();
-
-	float ReadLeftEncoders();
 
 private:
 	// -------------------------------------- Motores ----------------------------------------------------

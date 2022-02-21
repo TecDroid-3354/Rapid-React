@@ -35,7 +35,7 @@ public:
 	// Quedar a una distancia específica del objetivo
 	void AdjustDistance(float);
 
-	void DeterminePosition();
+	//void DeterminePosition();
 
 	void Run();
 
