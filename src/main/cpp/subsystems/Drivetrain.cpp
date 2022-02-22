@@ -112,6 +112,6 @@ float Drivetrain::ReadGyroDeg()
 {
 
 	// Se le agrega .value() porque GetAngle() no regresa un número sino una variable tipo angle, .value() obtiene el valor numérico
-	return gyro.GetAngle().value();
+	return - gyro.GetAngle().value();
 }
 

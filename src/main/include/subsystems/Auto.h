@@ -53,7 +53,7 @@ private:
 
 	PIDController limelightPID{kLimeP, kLimeI, kLimeD};
 
-	std::vector<std::vector<float>> setpoints = {{100, 100}, {100, -100}};
+	std::vector<std::vector<float>> setpoints = {{50, 50}, {0, 50}, {50,0},{0,0}};
 
 	unsigned int autoStep = 0;
 
