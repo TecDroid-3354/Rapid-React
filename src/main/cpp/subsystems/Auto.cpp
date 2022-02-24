@@ -48,7 +48,7 @@ Auto::Auto(Drivetrain &ch) : chasis{ch}
 void Auto::Periodic()
 {
 
-	//DeterminePosition();
+	// DeterminePosition();
 	SmartDashboard::PutNumber("X", currentX);
 	SmartDashboard::PutNumber("Y", currentY);
 	/*
@@ -73,7 +73,6 @@ bool Auto::Move(float distance, float speed)
 
 	SmartDashboard::PutNumber("Moving to", distance);
 
-
 	movePID.SetSetpoint(-distance);
 
 	float output = movePID.Calculate(-chasis.GetEncoderAverage());
@@ -86,9 +85,7 @@ bool Auto::Move(float distance, float speed)
 bool Auto::Turn(float angle, float speed)
 {
 
-	
-
-	if(fabs(angle) > 180)
+	if (fabs(angle) > 180)
 		angle = fmod(angle + 360, 360);
 
 	turnPID.SetSetpoint(angle);
@@ -98,7 +95,6 @@ bool Auto::Turn(float angle, float speed)
 
 	SmartDashboard::PutNumber("Turning To", angle);
 	return turnPID.AtSetpoint();
-	
 }
 
 // Resetear todo
@@ -119,7 +115,7 @@ void Auto::Reset()
 void Auto::Run()
 {
 
-	//Turn(90, kAutoSpeed);
+	// Turn(90, kAutoSpeed);
 
 	if (autoStep < setpoints.size() && MoveTo(setpoints[autoStep], kAutoSpeed))
 	{
@@ -130,34 +126,34 @@ void Auto::Run()
 bool Auto::MoveTo(vector<float> coordinate, float speed)
 {
 
-	
 	float x = coordinate[0] - currentX;
 	float y = coordinate[1] - currentY;
 
 	SmartDashboard::PutNumber("Absolute Angle", GetAbsoluteAngle(x, y));
 	SmartDashboard::PutNumber("MoveTo x", x);
 	SmartDashboard::PutNumber("MoveTo y", y);
-	float angle =  GetAbsoluteAngle(x, y);
+	float angle = GetAbsoluteAngle(x, y);
 	float distance = sqrt(pow(x, 2) + pow(y, 2));
 
 	if (isTurning)
 	{
 
-
-		if(Turn(angle, speed)){
+		if (Turn(angle, speed))
+		{
 			chasis.ResetEncoders();
 			isTurning = false;
 		}
 
 		return false;
 	}
-		
+
 	else
-	{	
-		
+	{
+
 		bool finished = Move(distance, speed);
 
-		if(finished) {
+		if (finished)
+		{
 			currentX = coordinate[0];
 			currentY = coordinate[1];
 			currentAngle = chasis.ReadGyroDeg();
@@ -166,28 +162,22 @@ bool Auto::MoveTo(vector<float> coordinate, float speed)
 
 		return finished;
 	}
-
-
 }
 
-
-float Auto::GetAbsoluteAngle(float x, float y){
+float Auto::GetAbsoluteAngle(float x, float y)
+{
 
 	float relAngle = atan(y / (x == 0 ? 0.01 : x));
-	if(x < 0){
-		relAngle += M_PI; 
-	} else if (y < 0){
-		relAngle += 2*M_PI; 
+	if (x < 0)
+	{
+		relAngle += M_PI;
 	}
-	return  (relAngle) * 180 / M_PI ;
+	else if (y < 0)
+	{
+		relAngle += 2 * M_PI;
+	}
+	return (relAngle)*180 / M_PI;
 }
-
-
-
-	
-
-	
-	
 
 /*
 void Auto::DeterminePosition()
@@ -218,7 +208,6 @@ void Auto::DeterminePosition()
 }
 */
 
-
 void Auto::Init()
 {
 
@@ -232,4 +221,3 @@ void Auto::Init()
 
 	isTurning = true;
 }
-

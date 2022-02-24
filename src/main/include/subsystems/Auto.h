@@ -35,7 +35,7 @@ public:
 	// Quedar a una distancia específica del objetivo
 	void AdjustDistance(float);
 
-	//void DeterminePosition();
+	// void DeterminePosition();
 
 	void Run();
 
@@ -53,7 +53,7 @@ private:
 
 	PIDController limelightPID{kLimeP, kLimeI, kLimeD};
 
-	std::vector<std::vector<float>> setpoints = {{50, 50}, {0, 50}, {50,0},{0,0}};
+	std::vector<std::vector<float>> setpoints = {{50, 50}, {0, 50}, {50, 0}, {0, 0}};
 
 	unsigned int autoStep = 0;
 
