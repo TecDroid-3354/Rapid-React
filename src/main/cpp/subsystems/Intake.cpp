@@ -4,8 +4,8 @@
 #include "Constants.h"
 using namespace frc;
 
-Intake::Intake(){
-
+Intake::Intake()
+{
 }
 
 void Intake::Periodic()

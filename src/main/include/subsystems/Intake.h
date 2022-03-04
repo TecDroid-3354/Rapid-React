@@ -6,9 +6,12 @@
 #include <frc/motorcontrol/VictorSP.h>
 #include "Constants.h"
 #include "frc/XboxController.h"
+#include <frc/motorcontrol/MotorControllerGroup.h>
+#include <rev/CANSparkMax.h>
 
 using namespace frc;
 using namespace frc2;
+using namespace rev;
 
 class Intake : public SubsystemBase
 {
@@ -24,7 +27,7 @@ public:
 
 private:
 	// Motor del intake
-	VictorSP motor{pIntake};
+	CANSparkMax motor{intakeDeviceID, CANSparkMax::MotorType::kBrushed};
 
 	// Control
 	XboxController control{0};
