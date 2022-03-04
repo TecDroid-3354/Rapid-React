@@ -18,6 +18,7 @@ class Drivetrain;
 // Clase para manejar el chasis
 class Drivetrain : public SubsystemBase
 {
+
 public:
 	Drivetrain();
 
@@ -39,7 +40,6 @@ public:
 
 	// Activar/Desactivar seguridad
 	void SetSafetyEnabled(bool);
-	
 
 	// Obtener el promedio de los cuatro encoders
 	float GetEncoderAverage();
@@ -50,7 +50,6 @@ public:
 
 	// Leer el valor del giroscopio
 	float ReadGyroDeg();
-
 
 private:
 	// -------------------------------------- Motores ----------------------------------------------------
@@ -94,4 +93,12 @@ private:
 
 	// Control
 	XboxController control{0};
+
+	// indicadores para climbmode
+	bool flag = true;
+	bool climbMode = false;
+
+	// indicadores para sensormode
+	bool flag2 = false;
+	bool sensorMode = true;
 };

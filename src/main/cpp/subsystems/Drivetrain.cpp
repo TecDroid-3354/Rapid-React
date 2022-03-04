@@ -40,6 +40,42 @@ void Drivetrain::Periodic()
 	SmartDashboard::PutNumber("Encoder Average", GetEncoderAverage());
 
 	SmartDashboard::PutNumber("Gyro", ReadGyroDeg());
+
+	// ------------------ climbMode -------------------------
+
+	// Si se pica el botón, se cambia de modo, pero solamente hasta que el botón se suelta
+	// Esto se hace para evitar que se cambie mil veces cada segundo
+	if (flag && control.GetRawButton(cStart))
+	{
+		climbMode = !climbMode;
+		flag = false;
+	}
+	else if (!control.GetRawButton(cStart))
+	{
+		flag = true;
+	}
+
+	// Indicar si está en modo de escalada
+	SmartDashboard::PutBoolean("Climb Mode", climbMode);
+
+	// ------------ sensorMode ------------------------------------
+	// Si se pica el botón, se cambia de modo, pero solamente hasta que el botón se suelta
+	// Esto se hace para evitar que se cambie mil veces cada segundo
+	if (flag && control.GetRawButton(cSelect))
+	{
+		sensorMode = !sensorMode;
+		flag2 = false;
+	}
+	else if (!control.GetRawButton(cSelect))
+	{
+		flag2 = true;
+	}
+
+	// Indicar si está en modo de escalada
+	SmartDashboard::PutBoolean("Climb Mode", climbMode);
+
+	if (!climbMode)
+		Drive();
 }
 
 // Manejar el robot según el control
@@ -58,7 +94,6 @@ void Drivetrain::Drive()
 // Manejar el robot según valores específicos
 void Drivetrain::Drive(float x, float y)
 {
-
 	chasis.ArcadeDrive(x, y);
 }
 
@@ -88,6 +123,7 @@ void Drivetrain::ResetEncoders()
 	encoderFrontRight.SetPosition(0);
 	encoderBackRight.SetPosition(0);
 }
+
 // Promedio de los encoders
 float Drivetrain::GetEncoderAverage()
 {
@@ -95,23 +131,19 @@ float Drivetrain::GetEncoderAverage()
 	return (ReadRightEncoders() + ReadLeftEncoders()) / 2;
 }
 
-
-float Drivetrain::ReadRightEncoders(){
-
-return -((encoderBackRight.GetPosition() + encoderFrontRight.GetPosition()) )/2;
-
+float Drivetrain::ReadRightEncoders()
+{
+	return -((encoderBackRight.GetPosition() + encoderFrontRight.GetPosition())) / 2;
 }
 
-float Drivetrain::ReadLeftEncoders(){
-
+float Drivetrain::ReadLeftEncoders()
+{
 	return (encoderFrontLeft.GetPosition() + encoderBackLeft.GetPosition()) / 2;
 }
 
 // Leer el giroscopio
 float Drivetrain::ReadGyroDeg()
 {
-
 	// Se le agrega .value() porque GetAngle() no regresa un número sino una variable tipo angle, .value() obtiene el valor numérico
-	return - gyro.GetAngle().value();
+	return -gyro.GetGyroAngleX().value();
 }
-
