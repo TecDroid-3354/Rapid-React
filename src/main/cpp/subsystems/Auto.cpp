@@ -42,12 +42,12 @@ void Auto::Run(){
 }*/
 
 Auto::Auto(Drivetrain &ch) : chasis{ch}
-{ // El :chasis{ch}  es como poner chasis = ch adentro de la función
+{
+	// El :chasis{ch}  es como poner chasis = ch adentro de la función
 }
 
 void Auto::Periodic()
 {
-
 	// DeterminePosition();
 	SmartDashboard::PutNumber("X", currentX);
 	SmartDashboard::PutNumber("Y", currentY);
@@ -70,12 +70,13 @@ void Auto::Periodic()
 
 bool Auto::Move(float distance, float speed)
 {
+	float output;
 
 	SmartDashboard::PutNumber("Moving to", distance);
 
 	movePID.SetSetpoint(-distance);
 
-	float output = movePID.Calculate(-chasis.GetEncoderAverage());
+	output = movePID.Calculate(-chasis.GetEncoderAverage());
 
 	chasis.Drive(0, clamp(output, -speed, speed));
 
@@ -94,33 +95,27 @@ bool Auto::Turn(float angle, float speed)
 	chasis.Drive(-clamp(output, -speed, speed), 0);
 
 	SmartDashboard::PutNumber("Turning To", angle);
+
 	return turnPID.AtSetpoint();
 }
 
 // Resetear todo
 void Auto::Reset()
 {
-
 	chasis.Reset();
-
 	movePID.Reset();
 	movePID.SetTolerance(1);
-
 	turnPID.Reset();
 	turnPID.SetTolerance(1);
-
 	limelightPID.Reset();
 }
 
 void Auto::Run()
 {
-
 	// Turn(90, kAutoSpeed);
 
 	if (autoStep < setpoints.size() && MoveTo(setpoints[autoStep], kAutoSpeed))
-	{
 		autoStep++;
-	}
 }
 
 bool Auto::MoveTo(vector<float> coordinate, float speed)
@@ -132,17 +127,14 @@ bool Auto::MoveTo(vector<float> coordinate, float speed)
 	SmartDashboard::PutNumber("Absolute Angle", GetAbsoluteAngle(x, y));
 	SmartDashboard::PutNumber("MoveTo x", x);
 	SmartDashboard::PutNumber("MoveTo y", y);
+
 	float angle = GetAbsoluteAngle(x, y);
 	float distance = sqrt(pow(x, 2) + pow(y, 2));
 
-	if (isTurning)
+	if (isTurning && Turn(angle, speed))
 	{
-
-		if (Turn(angle, speed))
-		{
-			chasis.ResetEncoders();
-			isTurning = false;
-		}
+		chasis.ResetEncoders();
+		isTurning = false;
 
 		return false;
 	}
@@ -150,9 +142,9 @@ bool Auto::MoveTo(vector<float> coordinate, float speed)
 	else
 	{
 
-		bool finished = Move(distance, speed);
+		bool isFinished = Move(distance, speed);
 
-		if (finished)
+		if (isFinished)
 		{
 			currentX = coordinate[0];
 			currentY = coordinate[1];
@@ -160,7 +152,7 @@ bool Auto::MoveTo(vector<float> coordinate, float speed)
 			isTurning = true;
 		}
 
-		return finished;
+		return isFinished;
 	}
 }
 
@@ -172,10 +164,12 @@ float Auto::GetAbsoluteAngle(float x, float y)
 	{
 		relAngle += M_PI;
 	}
+
 	else if (y < 0)
 	{
 		relAngle += 2 * M_PI;
 	}
+
 	return (relAngle)*180 / M_PI;
 }
 
@@ -210,14 +204,40 @@ void Auto::DeterminePosition()
 
 void Auto::Init()
 {
-
 	Reset();
 
 	autoStep = 0;
-
 	currentY = currentX = 0;
-
 	currentAngle = 0;
 
 	isTurning = true;
+}
+
+void Auto::EvalInstruction(std::map<char, float> map)
+{
+	for (auto const &c : map)
+	{
+		// Where: c.first = char, c.second = int
+		switch (c.first)
+		{
+		case 'm': // Move
+		{
+			// TODO: impl
+			// Move(c.second);
+		}
+		case 's': // Shoot
+		{
+			// TODO: impl
+			// Shoot();
+		}
+		case 'i': // Intake
+		{
+			// TODO: impl
+			// Intake();
+		}
+
+		default:
+			continue;
+		}
+	}
 }

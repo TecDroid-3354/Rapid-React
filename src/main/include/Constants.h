@@ -9,7 +9,7 @@
 
 constexpr int kObjectiveHeight = 135;
 constexpr int kLimelightHeight = 35;
-constexpr float kLimelightAngle = 40 * M_PI / 180;
+constexpr float kLimelightAngle = 72 * M_PI / 180;
 constexpr float kLimelightToFront = 68;
 
 //----------------------------Spark-IDs---------------------------------
@@ -18,16 +18,18 @@ constexpr int frontRightDeviceID = 1;
 constexpr int frontLeftDeviceID = 2;
 constexpr int backRightDeviceID = 3;
 constexpr int backLeftDeviceID = 4;
+constexpr int rightArmDeviceID = 6;
+constexpr int leftArmDeviceID = 7;
+constexpr int intakeDeviceID = 8;
 constexpr int shooterDeviceID = 5;
-constexpr int feederDeviceID = 6;
-constexpr int elevatorDeviceID = 7;
 
 //----------------------------PWM Ports---------------------------------
 
-constexpr int pIntake = 0;
 constexpr int pTurret = 1;
 constexpr int pServoRight = 2;
 constexpr int pServoLeft = 3;
+constexpr int pElevator = 4;
+constexpr int pFeeder = 5;
 
 //------------------------------DIO Ports----------------------------------
 
@@ -36,12 +38,16 @@ constexpr int pEncoderShooterB = 1;
 constexpr int pEncoderTurretA = 2;
 constexpr int pEncoderTurretB = 3;
 
+constexpr int sElevatorSwitchTop = 0;
+constexpr int sElevatorSwitchBottom = 1;
+
 //------------------------------Speeds----------------------------------
 
 constexpr float kAutoSpeed = 0.4;
 constexpr float kFeederSpeed = 1;
 constexpr float kIntakeSpeed = 1;
 constexpr float kTurretSpeed = 0.5;
+constexpr float kArmsSpeed = 0.3;
 
 //-----------------------------Constants---------------------------------
 
@@ -66,7 +72,7 @@ constexpr double kShooterP = 0, kShooterI = 0, kShooterD = 0;
 
 constexpr double kTurretEncoderP = 0, kTurretEncoderI = 0, kTurretEncoderD = 0;
 
-constexpr double kTurretAlignP = 0, kTurretAlignI = 0, kTurretAlignD = 0;
+constexpr double kTurretAlignP = 0.01, kTurretAlignI = 0, kTurretAlignD = 0.001;
 
 //---------------------------Control Map---------------------------------
 

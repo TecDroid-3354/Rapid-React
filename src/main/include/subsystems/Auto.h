@@ -43,9 +43,27 @@ public:
 
 	float GetAbsoluteAngle(float, float);
 
+	void EvalInstruction(std::map<char, float>);
+
 private:
+	unsigned int autoStep = 0;
+
+	float frontToTarget = 0;
+
+	double maxSpeed = 0.5;
+
+	double currentX, currentY, currentAngle = 0;
+
+	double horizontalAngle, verticalAngle, targetArea, targetSkew;
+
+	bool gotLimelightDistance = false;
+
+	bool isTurning = true;
+
 	// Chasis
 	Drivetrain &chasis;
+
+	std::map<char, float> executionChain{};
 
 	PIDController movePID{kMoveP, kMoveI, kMoveD};
 
@@ -55,20 +73,6 @@ private:
 
 	std::vector<std::vector<float>> setpoints = {{50, 50}, {0, 50}, {50, 0}, {0, 0}};
 
-	unsigned int autoStep = 0;
-
 	// Temporizador
 	frc::Timer timer;
-
-	double horizontalAngle, verticalAngle, targetArea, targetSkew;
-
-	float frontToTarget = 0;
-
-	bool gotLimelightDistance = false;
-
-	bool isTurning = true;
-
-	double maxSpeed = 0.5;
-
-	double currentX, currentY, currentAngle = 0;
 };

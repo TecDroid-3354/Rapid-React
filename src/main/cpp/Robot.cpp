@@ -8,23 +8,21 @@
 #include "Robot.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/CommandScheduler.h>
+#include "cameraserver/CameraServer.h"
 
 using namespace frc;
-
 
 // Inicializar el robot
 void Robot::RobotInit()
 {
-
-	
 	// Obtener cámara 1
-	// cs::UsbCamera cam = frc::CameraServer::GetInstance()->StartAutomaticCapture(0);
+	cs::UsbCamera cam = frc::CameraServer::GetInstance()->StartAutomaticCapture(0);
 
 	// Asignar resolución
-	// cam.SetResolution(640, 480);
+	cam.SetResolution(640, 480);
 
 	// Asignar FPS
-	// cam.SetFPS(40);
+	cam.SetFPS(40);
 
 	// Obtener cámara 2
 	// cs::UsbCamera cam2 = frc::CameraServer::GetInstance()->StartAutomaticCapture(1);
@@ -58,7 +56,6 @@ void Robot::DisabledPeriodic()
 // Inicializar autónomo
 void Robot::AutonomousInit()
 {
-
 	// Resetear el paso
 	robot.AutonomousInit();
 }

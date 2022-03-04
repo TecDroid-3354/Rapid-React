@@ -52,7 +52,6 @@ void Elevator::Periodic()
         }
         */
 
-        bool climbMode = SmartDashboard::GetBoolean("Climb Mode", false);
         if (climbMode)
         {
             MoveArms(kArmsSpeed);
@@ -76,6 +75,6 @@ void Elevator::Climb(float speed)
 
 void Elevator::MoveArms(float speed)
 {
-    rightArm.Set((-control.GetRawButton(cRightBumper) + control.GetRawButton(cLeftBumper)) * kTurretSpeed);
-    leftArm.Set((-control.GetRawButton(cRightBumper) + control.GetRawButton(cLeftBumper)) * kTurretSpeed);
+    rightArm.Set((-control.GetRawButton(cRightBumper) + control.GetRawButton(cLeftBumper)) * kArmsSpeed);
+    leftArm.Set((-control.GetRawButton(cRightBumper) + control.GetRawButton(cLeftBumper)) * kArmsSpeed);
 }
