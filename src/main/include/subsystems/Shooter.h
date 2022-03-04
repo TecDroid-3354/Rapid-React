@@ -24,7 +24,7 @@ public:
 
 	bool ReachRPM(float rpm);
 
-	void Shoot();
+	void Shoot(float speed);
 
 	void Feed();
 
@@ -46,7 +46,7 @@ private:
 	// Motor del disparador
 	CANSparkMax mShooter{shooterDeviceID, CANSparkMax::MotorType::kBrushed};
 
-	CANSparkMax mFeeder{feederDeviceID, CANSparkMax::MotorType::kBrushed};
+	CANSparkMax mFeeder{pFeeder, CANSparkMax::MotorType::kBrushed};
 
 	Encoder encoder{pEncoderShooterA, pEncoderShooterB, false};
 
